@@ -76,4 +76,15 @@ class DATABASE_CONFIG {
 		'prefix' => '',
 		//'encoding' => 'utf8',
 	);
+	
+    var $authake = array(
+        'datasource' => 'Database/Mysql',
+        'persistent' => false,
+        'host' => 'localhost',
+        'login' => "chika",
+        'password' => "6V5NYx7Vupzs4C8K",
+        'database' => 'chika',
+        'prefix' => ""
+    );
+	
 }
