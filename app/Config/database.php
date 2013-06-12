@@ -59,9 +59,9 @@ class DATABASE_CONFIG {
 		'datasource' => 'Database/Mysql',
 		'persistent' => false,
 		'host' => 'localhost',
-		'login' => 'user',
-		'password' => 'password',
-		'database' => 'database_name',
+		'login' => 'chika',
+		'password' => '6V5NYx7Vupzs4C8K',
+		'database' => 'chika',
 		'prefix' => '',
 		//'encoding' => 'utf8',
 	);
