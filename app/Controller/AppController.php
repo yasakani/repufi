@@ -34,10 +34,11 @@ App::uses('Controller', 'Controller');
 class AppController extends Controller {
     
     var $helpers = array('Form', 'Time', 'Html', 'Session', 'Js', 'Authake.Authake');
-    var $components = array('Session','RequestHandler', 'Authake.Authake');
+    var $components = array('Session','RequestHandler', 'Authake.Authake', 'DebugKit.Toolbar');
     var $counter = 0;
     
-    function beforeFilter() {
+    public function beforeFilter() {
+        $this->layout = 'chika';
         $this->auth();
     }
     
