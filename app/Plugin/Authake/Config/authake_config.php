@@ -2,9 +2,8 @@
 $config = array (
   'Authake' => 
   array (
-    'useDefaultLayout' => '1',
     'baseUrl' => '/',
-    'service' => 'Authake',
+    'service' => 'Usuarios',
     'loginAction' => 
     array (
       'plugin' => 'authake',
@@ -37,6 +36,7 @@ $config = array (
     'passwordVerify' => '1',
     'registration' => '1',
     'defaultGroup' => '2',
+    'useDefaultLayout' => '0',
     'useEmailAsUsername' => '0',
   ),
 );

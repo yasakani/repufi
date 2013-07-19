@@ -314,6 +314,10 @@ class UserController extends AuthakeAppController {
 	* Login functionality
 	*/
 	function login($Authake = null){
+        
+        $this->layout = 'login';
+        $this->title_for_layout = 'REPUFI';
+		
 		if(!isset($this->Authake))
 		{
 			$this->Authake = $Authake;
@@ -430,7 +434,7 @@ class UserController extends AuthakeAppController {
 				$this->Authake->login($userdata['User']);
 				if(!isset($this->request->data['requester']))
 				{
-					$this->Session->setFlash(__('You are logged in as ').$userdata['User']['login'], 'success' , array('plugin'=>'authake'));
+					$this->Session->setFlash(__('Has ingresado al sistema como ').$userdata['User']['login'], 'success' , array('plugin'=>'authake'));
 
 					if (($next = $this->Authake->getPreviousUrl()) !== null)
 					{
