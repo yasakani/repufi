@@ -81,10 +81,10 @@
                                     <a tabindex="-1" href="#">Horarios de establecimientos</a>
                                     <ul class="dropdown-menu">
                                         <li>
-                                            <?php echo $this->Html->link('Lista de horarios', array('controller' => 'schedule_presets', 'action' => 'index')); ?>
+                                            <?php echo $this->Html->link('Lista de horarios', array('controller' => 'schedules', 'action' => 'index')); ?>
                                         </li>
                                         <li>
-                                            <?php echo $this->Html->link('Agregar horario', array('controller' => 'schedule_presets', 'action' => 'add')); ?>
+                                            <?php echo $this->Html->link('Agregar horario', array('controller' => 'schedules', 'action' => 'add')); ?>
                                         </li>
                                     </ul>
                                 </li>
