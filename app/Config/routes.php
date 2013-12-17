@@ -39,6 +39,14 @@
 	Router::connect('/captura', array('controller' => 'forms', 'action' => 'add'));
 	Router::connect('/salir', array('plugin' => 'authake', 'controller' => 'user', 'action' => 'logout'));
 	
+	Router::connect('/mapa', array('controller' => 'forms', 'action' => 'map'));
+	
+	// Alias routes for forms
+	Router::connect('/puestos/:action/*', array('controller' => 'forms'));
+	
+	// Alias for documents
+	Router::connect('/documentos/*', array('controller' => 'forms', 'action' => 'docs'));
+	
 /**
  * Load all plugin routes. See the CakePlugin documentation on
  * how to customize the loading of plugin routes.

@@ -1,5 +1,5 @@
 <div id="login-register-img" style="display:none; width: 290px; height: 73px;">
-    <?php echo $this->Html->image('repufi_logo_temp', array('alt' => 'REPUFI', 'title' => 'REPUFI')); ?>
+    <?php echo $this->Html->image('repufi_logo_temp.png', array('alt' => 'REPUFI', 'title' => 'REPUFI')); ?>
 </div>
 
 <?php echo $this->Form->create(null, array('class' => 'form-signin', 'style' => 'display:none;', 'url' => array('controller' => 'user', 'action' => 'login'))); ?>

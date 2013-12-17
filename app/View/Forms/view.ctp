@@ -1,149 +1,125 @@
-<div class="forms view">
-<h2><?php  echo __('Form'); ?></h2>
-	<dl>
-		<dt><?php echo __('Id'); ?></dt>
-		<dd>
-			<?php echo h($form['Form']['id']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Name'); ?></dt>
-		<dd>
-			<?php echo h($form['Form']['name']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Lastname Pater'); ?></dt>
-		<dd>
-			<?php echo h($form['Form']['lastname_pater']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Lastname Mater'); ?></dt>
-		<dd>
-			<?php echo h($form['Form']['lastname_mater']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Address'); ?></dt>
-		<dd>
-			<?php echo h($form['Form']['address']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Suburb Id'); ?></dt>
-		<dd>
-			<?php echo h($form['Form']['suburb_id']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Age'); ?></dt>
-		<dd>
-			<?php echo h($form['Form']['age']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Receipt Id'); ?></dt>
-		<dd>
-			<?php echo h($form['Form']['receipt_id']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Photo'); ?></dt>
-		<dd>
-			<?php echo h($form['Form']['photo']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Commerce Location'); ?></dt>
-		<dd>
-			<?php echo h($form['Form']['commerce_location']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Commece Latitude'); ?></dt>
-		<dd>
-			<?php echo h($form['Form']['commece_latitude']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Commerce Longitude'); ?></dt>
-		<dd>
-			<?php echo h($form['Form']['commerce_longitude']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Order'); ?></dt>
-		<dd>
-			<?php echo h($form['Form']['order']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Commerce Width'); ?></dt>
-		<dd>
-			<?php echo h($form['Form']['commerce_width']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Commerce Long'); ?></dt>
-		<dd>
-			<?php echo h($form['Form']['commerce_long']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Commerce Square Meters'); ?></dt>
-		<dd>
-			<?php echo h($form['Form']['commerce_square_meters']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Commerce Squedule Open'); ?></dt>
-		<dd>
-			<?php echo h($form['Form']['commerce_squedule_open']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Commerce Squedule Close'); ?></dt>
-		<dd>
-			<?php echo h($form['Form']['commerce_squedule_close']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Scan Receipt'); ?></dt>
-		<dd>
-			<?php echo h($form['Form']['scan_receipt']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Scan Commerce Photo'); ?></dt>
-		<dd>
-			<?php echo h($form['Form']['scan_commerce_photo']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Scan Rights'); ?></dt>
-		<dd>
-			<?php echo h($form['Form']['scan_rights']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Scan User Photo'); ?></dt>
-		<dd>
-			<?php echo h($form['Form']['scan_user_photo']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Scan Address'); ?></dt>
-		<dd>
-			<?php echo h($form['Form']['scan_address']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Scan Sanity'); ?></dt>
-		<dd>
-			<?php echo h($form['Form']['scan_sanity']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Scan Ife'); ?></dt>
-		<dd>
-			<?php echo h($form['Form']['scan_ife']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Scan Repecos'); ?></dt>
-		<dd>
-			<?php echo h($form['Form']['scan_repecos']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Scan Ambient'); ?></dt>
-		<dd>
-			<?php echo h($form['Form']['scan_ambient']); ?>
-			&nbsp;
-		</dd>
-	</dl>
-</div>
-<div class="actions">
-	<h3><?php echo __('Actions'); ?></h3>
-	<ul>
-		<li><?php echo $this->Html->link(__('Edit Form'), array('action' => 'edit', $form['Form']['id'])); ?> </li>
-		<li><?php echo $this->Form->postLink(__('Delete Form'), array('action' => 'delete', $form['Form']['id']), null, __('Are you sure you want to delete # %s?', $form['Form']['id'])); ?> </li>
-		<li><?php echo $this->Html->link(__('List Forms'), array('action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Form'), array('action' => 'add')); ?> </li>
-	</ul>
+<div id="forms-view">
+    
+    <div class="row">
+        <div class="span6">
+            <h2>
+                Detalles del registro
+            </h2>
+        </div>
+        <div class="span6">
+            <div class="actions">
+                <ul class="inline">
+                    <li><?php echo $this->Html->link('Lista de registros', array('action' => 'index'), array('class' => 'btn btn-small')); ?></li>
+                    <li><?php echo $this->Html->link('Editar registro', array('action' => 'edit', $form['Form']['id']), array('class' => 'btn btn-small')); ?></li>
+                    <li><?php echo $this->Form->postLink('Eliminar registro', array('action' => 'delete', $form['Form']['id']), array('class' => 'btn btn-small btn-danger'), '¿Eliminar registro?', $form['Form']['id']); ?></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <h3>
+        Propietario
+    </h3>
+    
+    <div class="row">
+        
+        <div class="span8">
+            
+            <div class="row">
+                
+                <div class="span2">
+                    <a href="#" class="thumbnail">
+                        <?php echo $this->Html->image($form['Form']['owner_photo']); ?>
+                    </a>
+                </div>
+                
+                <div class="span6">
+                    
+                    <ul class="unstyled detail-block">
+                        <li>
+                            Número de folio: <strong><?php echo $form['Form']['id']; ?></strong>
+                        </li>
+                        <li>
+                            <span class="full-name"><?php echo $form['Form']['full_name']; ?></span> <span class="label"><?php echo $form['Form']['age'] ?> años</span>
+                        </li>
+                        <li>
+                            Dirección: <strong><?php echo $form['Form']['address']; ?></strong>
+                        </li>
+                        <li>
+                            Colonia: <strong><?php echo $form['Suburb']['name']; ?></strong>
+                        </li>
+                        <li>
+                            No. de recibo: <strong><?php echo $form['Form']['receipt_number']; ?></strong>
+                            <?php if ( $form['Form']['status'] == 1 ) : ?>
+                                <span class="label label-success">Pagado</span>
+                            <?php else: ?>
+                                <span class="label label-important">Sin pagar</span>
+                            <?php endif; ?>
+                        </li>
+                    </ul>
+                    
+                </div>
+                
+            </div>
+            
+        </div>
+        
+    </div>
+    
+    <h3>
+        Comercio
+    </h3>
+    
+    <div class="row">
+        <div class="span8">
+            
+            <ul class="unstyled detail-block">
+                <li>
+                    Ubicacion del puesto: <strong><?php echo $form['Form']['commerce_location']; ?></strong>
+                </li>
+                <li>
+                    Categoría: <strong><?php echo $form['Category']['name']; ?></strong>
+                </li>
+                <li>
+                    Giro: <strong><?php echo $form['Form']['commerce_order']; ?></strong>
+                </li>
+                <li>
+                    Dimensiones: <strong><?php echo $form['Form']['commerce_width']; ?></strong>m ancho X <strong><?php echo $form['Form']['commerce_long']; ?></strong>m largo (<strong><?php echo $form['Form']['commerce_square_meters']; ?>m<sup>2</sup></strong>)
+                </li>
+                <li>
+                    Horario:
+                    <dl class="dl-horizontal">
+                        <?php foreach ( $form['Form']['schedule'] as $day => $details ) : ?>
+                        <dt><?php echo $day; ?></dt>
+                        <dd>De <strong><?php echo $details['openhour']; ?></strong> hrs. a <strong><?php echo $details['closehour']; ?></strong> hrs.</dd>
+                        <?php endforeach; ?>
+                    </dl>
+                </li>
+            </ul>
+            
+        </div>
+    </div>
+    
+    <h3>
+        Documentos
+        <?php echo $this->Html->link('Editar documentos', array('action' => 'docs', $form['Form']['id']), array('class' => 'btn btn-info btn-mini')); ?>
+    </h3>
+    
+    <div class="row">
+        <div class="span12">
+            <ul class="thumbnails">
+                <?php foreach ( $form['Documents'] as $type => $img ) : ?>
+                    <li class="span2">
+                        <div class="thumbnail">
+                            <?php echo $this->Html->image( $img ); ?>
+                        </div>
+                        <div class="caption">
+                            <h4><?php echo $type; ?></h4>
+                        </div>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+        </div>
+    </div>
+    
 </div>

@@ -346,3 +346,25 @@ Cache::config('_cake_model_', array(
 	'serialize' => ($engine === 'File'),
 	'duration' => $duration
 ));
+
+/**
+ * Configuration for documents
+ */
+Configure::write('docuemnt_types', array(
+		0 => array('type' => 'receipt_2011', 'caption' => 'Recibo de pago 2011', 'img' => null),
+		1 => array('type' => 'receipt_2012', 'caption' => 'Recibo de pago 2012', 'img' => null),
+		2 => array('type' => 'recent_photo', 'caption' => 'Fotografia reciente del comercio', 'img' => null),
+		3 => array('type' => 'rights_2013', 'caption' => 'Pago de derechos 2013', 'img' => null), 
+		4 => array('type' => 'photo_id', 'caption' => 'Fotografía tamaño credencial', 'img' => null),
+		5 => array('type' => 'address', 'caption' => 'Constancia domiciliaria', 'img' => null),
+		6 => array('type' => 'sanity', 'caption' => 'Tarjeta sanitaria', 'img' => null),
+		7 => array('type' => 'ife', 'caption' => 'IFE', 'img' => null),
+		8 => array('type' => 'fiscal', 'caption' => 'Cédula de identificación Fiscal', 'img' => null),
+		9 => array('type' => 'ambient', 'caption' => 'Dictamen favorable', 'img' => null)));
+
+Configure::write('documents_folder_name', 'documents');
+Configure::write('documents_path', IMAGES . Configure::read('documents_folder_name'));
+Configure::write('owners_photos_path', Configure::read('documents_path') . DS . 'owners');
+
+
+

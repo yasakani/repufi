@@ -38,6 +38,7 @@ class AppController extends Controller {
     var $counter = 0;
     
     public function beforeFilter() {
+    	setlocale(LC_TIME, 'es_MX.utf8');
         $this->layout = 'chika';
         $this->auth();
     }

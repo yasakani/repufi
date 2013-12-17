@@ -8,6 +8,11 @@ App::uses('AppModel', 'Model');
  */
 class Form extends AppModel {
 
+	public $virtualFields = array(
+			'full_name' => 'CONCAT(Form.lastname_pater, " ", Form.lastname_mater, " ", Form.name)',
+			'commerce_square_meters' => '(Form.commerce_width * Form.commerce_long)'
+	);
+	
 /**
  * Validation rules
  *
@@ -225,21 +230,19 @@ class Form extends AppModel {
 			),
 		),*/
 	);
-
-	//The Associations below have been created with all possible keys, those that are not needed can be removed
-
-/**
- * belongsTo associations
- *
- * @var array
- */
+	
 	public $belongsTo = array(
 		'Suburb' => array(
 			'className' => 'Suburb',
-			'foreignKey' => 'suburb_id',
-			'conditions' => '',
-			'fields' => '',
-			'order' => ''
+			'foreignKey' => 'suburb_id'
+		),
+		'Schedule' => array(
+			'className' => 'Schedule',
+			'foreignKey' => 'schedule_id'
+		),
+		'Category' => array(
+			'className' => 'Category',
+			'foreignKey' => 'category_id'
 		)
 	);
 }

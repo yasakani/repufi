@@ -2,67 +2,64 @@
     
 	<h2>Registros</h2>
 	
-	<table cellpadding="0" cellspacing="0">
-	   <tr>
-	    <!-- user data -->
-        <th><?php echo $this->Paginator->sort('id', 'ID'); ?></th>
-        <th><?php echo $this->Paginator->sort('photo', 'Foto'); ?></th>
-        <th><?php echo $this->Paginator->sort('name', 'Nombre'); ?></th>
-        <th><?php echo $this->Paginator->sort('lastname_pater', 'Apellido Paterno'); ?></th>
-        <th><?php echo $this->Paginator->sort('lastname_mater', 'Apellido Materno'); ?></th>
-        <!-- datos del comercio -->
-        <th><?php echo $this->Paginator->sort('commerce_location'); ?></th>
-        <th><?php echo $this->Paginator->sort('commece_latitude'); ?></th>
-        <th><?php echo $this->Paginator->sort('commerce_longitude'); ?></th>
-        
-        
-        
-        <th><?php echo $this->Paginator->sort('commerce_width'); ?></th>
-        <th><?php echo $this->Paginator->sort('commerce_long'); ?></th>
-        <th><?php echo $this->Paginator->sort('commerce_square_meters'); ?></th>
-        <!-- status de pago -->
-        <th><?php echo $this->Paginator->sort('receipt_id'); ?></th>
-        <!-- actions-->
-        <th>&nbsp;</th>
-	</tr>
-	<?php foreach ($forms as $form): ?>
-	<tr>
-		<td><?php echo h($form['Form']['id']); ?>&nbsp;</td>
-		<td><?php echo h($form['Form']['photo']); ?>&nbsp;</td>
-		<td><?php echo h($form['Form']['name']); ?>&nbsp;</td>
-		<td><?php echo h($form['Form']['lastname_pater']); ?>&nbsp;</td>
-		<td><?php echo h($form['Form']['lastname_mater']); ?>&nbsp;</td>
-		
-		<td><?php echo h($form['Form']['commerce_location']); ?>&nbsp;</td>
-		<td><?php echo h($form['Form']['commece_latitude']); ?>&nbsp;</td>
-		<td><?php echo h($form['Form']['commerce_longitude']); ?>&nbsp;</td>
-		
-		<td><?php echo h($form['Form']['commerce_width']); ?>&nbsp;</td>
-		<td><?php echo h($form['Form']['commerce_long']); ?>&nbsp;</td>
-		<td><?php echo h($form['Form']['commerce_square_meters']); ?>&nbsp;</td>
-		
-        <td><?php echo h($form['Form']['receipt_id']); ?>&nbsp;</td>
-		
-		<td class="actions">
-			<?php echo $this->Html->link(__('View'), array('action' => 'view', $form['Form']['id'])); ?>
-			<?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $form['Form']['id'])); ?>
-			<?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $form['Form']['id']), null, __('Are you sure you want to delete # %s?', $form['Form']['id'])); ?>
-		</td>
-		
-	</tr>
-<?php endforeach; ?>
-	</table>
-	<p>
-	<?php
-	echo $this->Paginator->counter(array(
-	'format' => __('Page {:page} of {:pages}, showing {:current} records out of {:count} total, starting on record {:start}, ending on {:end}')
-	));
-	?>	</p>
-	<div class="paging">
-	<?php
-		echo $this->Paginator->prev('< ' . __('previous'), array(), null, array('class' => 'prev disabled'));
-		echo $this->Paginator->numbers(array('separator' => ''));
-		echo $this->Paginator->next(__('next') . ' >', array(), null, array('class' => 'next disabled'));
-	?>
+    <p>
+       <?php echo $this->Paginator->counter(array(
+           'format' => __('Pagina {:page} de {:pages}, mostrando {:current} registros de {:count} totales, primer registro: {:start}, ultimo {:end}.')
+        ));?>
+    </p>
+	
+	<div class="pagination">
+	    <ul>
+        <?php
+            echo $this->Paginator->prev('&laquo;', array('tag' => 'li', 'escape' => false), null, array('escape' => false, 'class' => 'disabled', 'tag' => 'li', 'disabledTag' => 'a'));
+            echo $this->Paginator->numbers(array('tag' => 'li','separator' => '', 'currentClass' => 'active', 'currentTag' => 'a'));
+            echo $this->Paginator->next('&raquo;', array('tag' => 'li', 'escape' => false), null, array('escape' => false, 'class' => 'disabled', 'tag' => 'li', 'disabledTag' => 'a'));
+        ?>
+        </ul>
 	</div>
+	
+	<table class="table table-striped table-bordered table-hover">
+	   
+	   <tr>
+	       <th><?php echo $this->Paginator->sort('id', 'Registro'); ?></th>
+            <th><?php echo $this->Paginator->sort('full_name', 'Nombre del propietario'); ?></th>
+            <th><?php echo $this->Paginator->sort('commerce_location', 'Ubicación'); ?></th>
+            <th><?php echo $this->Paginator->sort('commerce_square_meters', 'Superficie'); ?></th>
+            <th><?php echo $this->Paginator->sort('receipt_number', 'Estatus'); ?></th>
+        </tr>
+        
+        <?php foreach ($forms as $form): ?>
+        <tr>
+            <td>
+                <?php echo h($form['Form']['id']); ?>
+                <div class="btn-group">
+                    <a class="btn btn-mini dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="icon-cog">&nbsp;</i>
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu pull-left">
+                        <li><?php echo $this->Html->link('Editar', array('controller' => 'forms', 'action' => 'edit', $form['Form']['id'])); ?></li>
+                        <li><?php echo $this->Form->postLink('Eliminar', array('action' => 'delete', $form['Form']['id']), null, '¿Eliminar registro?'); ?></li>
+                    </ul>
+                </div>
+            </td>
+            <td><?php echo $this->Html->link($form['Form']['full_name'], array('controller' => 'forms', 'action' => 'view', $form['Form']['id'])); ?></td>
+            <td><?php echo h($form['Form']['commerce_location']); ?></td>
+            <td><?php echo round($form['Form']['commerce_square_meters'], 2); ?>m<sup>2</sup></td>
+            <td><?php echo ( !empty($form['Form']['receipt_number']) || $form['Form']['receipt_number'] != 0) ? 'Pagado': 'No pagado'; ?></td>
+        </tr>
+        <?php endforeach; ?>
+        
+    </table>
+    
+    <div class="pagination">
+        <ul>
+        <?php
+            echo $this->Paginator->prev('&laquo;', array('tag' => 'li', 'escape' => false), null, array('escape' => false, 'class' => 'disabled', 'tag' => 'li', 'disabledTag' => 'a'));
+            echo $this->Paginator->numbers(array('tag' => 'li','separator' => '', 'currentClass' => 'active', 'currentTag' => 'a'));
+            echo $this->Paginator->next('&raquo;', array('tag' => 'li', 'escape' => false), null, array('escape' => false, 'class' => 'disabled', 'tag' => 'li', 'disabledTag' => 'a'));
+        ?>
+        </ul>
+    </div>
+    
 </div>

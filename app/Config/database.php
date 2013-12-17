@@ -59,9 +59,9 @@ class DATABASE_CONFIG {
 		'datasource' => 'Database/Mysql',
 		'persistent' => false,
 		'host' => 'localhost',
-		'login' => 'chika',
-		'password' => '6V5NYx7Vupzs4C8K',
-		'database' => 'chika',
+		'login' => 'csigobne_repufi',
+		'password' => 'HX86denMrly6',
+		'database' => 'csigobne_repufi',
 		'prefix' => '',
 		//'encoding' => 'utf8',
 	);
@@ -81,9 +81,9 @@ class DATABASE_CONFIG {
         'datasource' => 'Database/Mysql',
         'persistent' => false,
         'host' => 'localhost',
-        'login' => "chika",
-        'password' => "6V5NYx7Vupzs4C8K",
-        'database' => 'chika',
+        'login' => "csigobne_repufi",
+        'password' => "HX86denMrly6",
+        'database' => 'csigobne_repufi',
         'prefix' => ""
     );
 	
