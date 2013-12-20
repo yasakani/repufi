@@ -8,9 +8,22 @@
         
         <div class="span12">
 	        
-	        <h4>
-	            Documentos del puesto con folio: <strong><?php echo $form_id; ?></strong>
-	        </h4>
+	        <div class="row">
+	        	
+	        	<div class="span6">
+			        <h4>
+			            Documentos del puesto con folio: <strong><?php echo $form_id; ?></strong>
+			        </h4>
+	        	</div>
+	        	
+				<div class="span6 text-right">
+					<ul class="unstyled inline">
+						<li><?php echo $this->Html->link('Detalles del registro', array('action' => 'view', $form_id), array('class' => 'btn btn-small btn-info')); ?></li>
+					</ul>
+				</div>
+	        	
+	        	
+	        </div>
 	        
 	        <table class="table table-hover">
 	        	<thead>

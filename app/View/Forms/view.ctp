@@ -84,7 +84,15 @@
                     Giro: <strong><?php echo $form['Form']['commerce_order']; ?></strong>
                 </li>
                 <li>
-                    Dimensiones: <strong><?php echo $form['Form']['commerce_width']; ?></strong>m ancho X <strong><?php echo $form['Form']['commerce_long']; ?></strong>m largo (<strong><?php echo $form['Form']['commerce_square_meters']; ?>m<sup>2</sup></strong>)
+                    Dimensiones:
+                    <dl class="dl-horizontal">
+                    	<dt>Area</dt>
+                    	<dd><?php echo $form['Form']['commerce_square_meters']; ?> m<sup>2</sup></dd>
+                    	<dt>Ancho</dt>
+                    	<dd><?php echo $form['Form']['commerce_width']; ?> m</dd>
+                    	<dt>Largo</dt>
+                    	<dd><?php echo $form['Form']['commerce_long']; ?> m</dd>
+                    </dl>
                 </li>
                 <li>
                     Horario:
@@ -108,13 +116,13 @@
     <div class="row">
         <div class="span12">
             <ul class="thumbnails">
-                <?php foreach ( $form['Documents'] as $type => $img ) : ?>
+                <?php foreach ( $form['Documents'] as $index => $data ) : ?>
                     <li class="span2">
                         <div class="thumbnail">
-                            <?php echo $this->Html->image( $img ); ?>
+                            <?php echo $this->Html->image( $data['img'] ); ?>
                         </div>
                         <div class="caption">
-                            <h4><?php echo $type; ?></h4>
+                            <h4><?php echo $data['caption']; ?></h4>
                         </div>
                     </li>
                 <?php endforeach; ?>

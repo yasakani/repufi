@@ -44,6 +44,15 @@ class FormsController extends AppController {
 		$form['Form']['owner_photo'] = $this->__getOwnersPhoto($id);
 		$form['Documents'] = $this->__getDocumentList($id);
 		$form['Form']['schedule'] = $this->__getSchedule($form);
+		$form['Form']['commerce_square_meters'] = round($form['Form']['commerce_square_meters'], 2);
+		
+		if ( $form['Form']['birthday'] != '0000-00-00' ) {
+			
+			$today = new DateTime("now");
+			$birthday = new DateTime( $form['Form']['birthday'] );
+			$form['Form']['age'] = $today->diff($birthday)->format('%y');
+			
+		}
 		
 		$this->set('form', $form);
 		
@@ -74,17 +83,17 @@ class FormsController extends AppController {
 			if ( $this->Form->save($this->request->data) ) {
 				
 				// Photo owner
-				if ( $this->documentUpload($this->request->data['Form']['owner_photo'], $this->Form->id, 'owner_photo') )
-					$this->Session->setFlash('Datos de registro capturados correctamente; imagen de propitario cargada correctamente.');
+				if ( $this->__uploadDocument($this->request->data['Form']['owner_photo'], $this->Form->id, 'owner_photo') )
+					$this->Session->setFlash('Datos de registro capturados correctamente; imagen de propitario cargada correctamente.', 'flash_bootstrap_success');
 				else
-					$this->Session->setFlash('Datos de registro capturados correctamente.');
+					$this->Session->setFlash('Datos de registro capturados correctamente.', 'flash_bootstrap_success');
 				
 				$this->redirect( array('action' => 'docs', $this->Form->id) );
 				
 			} else {
 			    
 			    $this->set('errors', $this->Form->validationErrors);
-				$this->Session->setFlash('Ocurrio un problema al guardar los datos, intentalo nuevamente.');
+				$this->Session->setFlash('Ocurrio un problema al guardar los datos, intentalo nuevamente.', 'flas_bootstrap_error');
 				
 			}
 			
@@ -99,7 +108,7 @@ class FormsController extends AppController {
 		    $schedules = $this->Form->Schedule->find('list', array('order' => 'Schedule.sequence DESC'));
 		    $this->set(compact('schedules'));
 		    
-		    $months_spanish = array('01' => 'Enero', '02' => 'Febrero', '03' => 'Marzo', '04' => 'Abril', '05' => 'Mayo', '06' => 'Junio', '07' => 'Julio', '08' => 'Agosto', '09' => 'Septiembre', '10' => 'Octubre', '11' => 'Noviembre', '12' => 'Diciembre');
+		    $months_spanish = $this->__getMonthListInSpanish();
 		    $this->set(compact('months_spanish'));
 		    
 		}
@@ -113,20 +122,50 @@ class FormsController extends AppController {
  * @return void
  */
 	public function edit($id = null) {
+		
 		if (!$this->Form->exists($id)) {
-			throw new NotFoundException(__('Invalid form'));
+			throw new NotFoundException('El identificador de registro especificado no es valido.');
 		}
+		
 		if ($this->request->is('post') || $this->request->is('put')) {
+			
+			$this->Form->id = $id;
+			
+			// Status
+			settype($this->request->data['Form']['receipt_number'], 'integer');
+			$this->request->data['Form']['status'] = ( $this->request->data['Form']['receipt_number'] == 0 ) ? 0: 1;
+			
+			$this->request->data['Form']['modified_by'] = $this->Authake->getLogin();
+			
 			if ($this->Form->save($this->request->data)) {
-				$this->Session->setFlash(__('The form has been saved'));
-				$this->redirect(array('action' => 'index'));
-			} else {
-				$this->Session->setFlash(__('The form could not be saved. Please, try again.'));
-			}
-		} else {
-			$options = array('conditions' => array('Form.' . $this->Form->primaryKey => $id));
-			$this->request->data = $this->Form->find('first', $options);
+				
+				if ( $this->__uploadDocument($this->request->data['Form']['owner_photo'], $id, 'owner_photo') ) 
+					$this->Session->setFlash('Datos de registro capturados correctamente; imagen de propitario cargada correctamente.', 'flash_bootstrap_success');
+				else
+					$this->Session->setFlash('Datos de registro editados correctamente.', 'flash_bootstrap_success');
+				
+			} else
+				$this->Session->setFlash('Datos de registro no editados, intentalo nuevamente.', 'flash_bootstrap_error');
+			
 		}
+			
+		$this->set('title_for_layout', "Editar datos del registro No. $id");
+		
+		$options = array('conditions' => array('Form.' . $this->Form->primaryKey => $id));
+		$this->request->data = $this->Form->find('first', $options);
+		
+	    $suburbs = $this->Form->Suburb->find('list');
+	    $this->set(compact('suburbs'));
+	    
+	    $categories = $this->Form->Category->find('list');
+	    $this->set(compact('categories'));
+	    
+	    $schedules = $this->Form->Schedule->find('list', array('order' => 'Schedule.sequence DESC'));
+	    $this->set(compact('schedules'));
+		
+	    $months_spanish = $this->__getMonthListInSpanish();
+	    $this->set(compact('months_spanish'));
+		
 	}
 
 /**
@@ -146,33 +185,28 @@ class FormsController extends AppController {
 		
 		$this->request->onlyAllow('post', 'delete');
 		
-		if ( $this->Form->delete() ) {
+		if ( $this->__deleteOwnersPhoto($id) ) {	
 			
-			$message = '<ul>';
-			
-			$message.= '<li>Datos de registro eliminados correctamente.</li>';
-			
-			$message.= '<li>';
-			$message.= ( $this->__deleteOwnersPhoto($id) ) ? 'Foto de propietario eliminada correctamente.': 'Foto de propietario no eliminada.';
-			$message.= '</li>';
-			
-			$document_types = Configure::read('docuemnt_types');
+			if ( $this->Form->delete() ) {
 				
-			foreach ( $document_types as $type ) {
-				$message.= '<li>';
-				$message.= ( $this->__deleteDocument($id, $type) ) ? "Documento del tipo <b>$type</b> eliminado correctamente.": "Documento del tipo <b>$type</b> no eliminado.";
-				$message.= '</li>';
+				$documents_status = $this->__deleteAllDocuments($id);
+				
+				$this->Session->setFlash("Registro eliminado correctamente. $documents_status ", 'flash_bootstrap_success');
+				$this->redirect(array('action' => 'index'));
+				
+			} else {
+				
+				$this->Session->setFlash('Foto del propietario eliminada correctemente, datos del registro no eliminados.', 'flash_bootstrap_alert');
+				$this->redirect($this->referer);
+				
 			}
 			
-			$message.= '</ul>';
+		} else {
 			
-			$this->Session->setFlash($message);
-			$this->redirect(array('action' => 'index'));
+			$this->Session->setFlash('El registro no fue eliminado, intentalo nuevamente.', 'flash_bootstrap_error');
+			$this->redirect($this->referer);
 			
 		}
-		
-		$this->Session->setFlash(__('Form was not deleted'));
-		$this->redirect(array('action' => 'index'));
 		
 	}
 	
@@ -229,6 +263,10 @@ class FormsController extends AppController {
 		
 	}
 	
+	private function __getMonthListInSpanish() {
+		return $months_spanish = array('01' => 'Enero', '02' => 'Febrero', '03' => 'Marzo', '04' => 'Abril', '05' => 'Mayo', '06' => 'Junio', '07' => 'Julio', '08' => 'Agosto', '09' => 'Septiembre', '10' => 'Octubre', '11' => 'Noviembre', '12' => 'Diciembre');
+	}
+	
 	private function __getOwnersPhoto($form_id = null) {
 		
 		if ( !$form_id ) return false;
@@ -244,7 +282,7 @@ class FormsController extends AppController {
 		if ( !$form_id ) return array();
 		
 		// Get list of types for documents
-		$document_types = Configure::read('docuemnt_types');
+		$document_types = Configure::read('document_types');
 		
 		// Get path for documents
 		$documents_path = Configure::read('documents_path');
@@ -278,7 +316,7 @@ class FormsController extends AppController {
 		if ( $form['Form']['schedule_id'] == '0' )
 			$schedule = json_decode( $form['Form']['commerce_schedule'],  true );
 		else 
-			$schedule = json_decode( $form['Schedule']['schedule'], true );
+			$schedule = json_decode( $form['Schedule']['data'], true );
 		
 		foreach ( $schedule as $day => $details ) {
 			
@@ -311,11 +349,28 @@ class FormsController extends AppController {
 		
 	}
 	
+	private function __deleteAllDocuments($form_id = null) {
+		
+		if ( !$form_id ) return false;
+		
+		$response = array();
+		
+		$document_types = Configure::read('document_types');
+		
+		foreach ($document_types as $index => $data) {
+			$type = $data['type'];
+			$response[$type] = $this->__deleteDocument($form_id, $type);
+		}
+		
+		return $response;
+		
+	}
+	
 	private function __getDocumentCaptionFromType($document_type) {
 		
 		if ( empty($document_type) || !$document_type ) return false;
 		
-		$document_types = Configure::read('docuemnt_types');
+		$document_types = Configure::read('document_types');
 		
 		foreach ( $document_types as $index => $document_data ) {
 			if ( $document_data['type'] == $document_type )

@@ -350,7 +350,7 @@ Cache::config('_cake_model_', array(
 /**
  * Configuration for documents
  */
-Configure::write('docuemnt_types', array(
+Configure::write('document_types', array(
 		0 => array('type' => 'receipt_2011', 'caption' => 'Recibo de pago 2011', 'img' => null),
 		1 => array('type' => 'receipt_2012', 'caption' => 'Recibo de pago 2012', 'img' => null),
 		2 => array('type' => 'recent_photo', 'caption' => 'Fotografia reciente del comercio', 'img' => null),
