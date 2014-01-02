@@ -362,6 +362,8 @@ Configure::write('document_types', array(
 		8 => array('type' => 'fiscal', 'caption' => 'Cédula de identificación Fiscal', 'img' => null),
 		9 => array('type' => 'ambient', 'caption' => 'Dictamen favorable', 'img' => null)));
 
+Configure::write('document_valid_types', array('jpg', 'jpeg'));
+
 Configure::write('documents_folder_name', 'documents');
 Configure::write('documents_path', IMAGES . Configure::read('documents_folder_name'));
 Configure::write('owners_photos_path', Configure::read('documents_path') . DS . 'owners');

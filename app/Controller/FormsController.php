@@ -82,11 +82,21 @@ class FormsController extends AppController {
 			
 			if ( $this->Form->save($this->request->data) ) {
 				
-				// Photo owner
-				if ( $this->__uploadDocument($this->request->data['Form']['owner_photo'], $this->Form->id, 'owner_photo') )
-					$this->Session->setFlash('Datos de registro capturados correctamente; imagen de propitario cargada correctamente.', 'flash_bootstrap_success');
-				else
-					$this->Session->setFlash('Datos de registro capturados correctamente.', 'flash_bootstrap_success');
+				$this->setFlash('Datos de registro capturados correctamente.', 'flash_bootstrap_success');
+				
+				if ( !empty($this->request->data['Form']['owner_photo']['name']) ) {
+					
+					if ( $this->__documentValidType($this->request->data['Form']['owner_photo']) ) {
+						
+						if ( $this->__uploadDocument($this->request->data['Form']['owner_photo'], $id, 'owner_photo') ) 
+							$this->setFlash('Imagen de propitario cargada correctamente.', 'flash_bootstrap_success');
+						else
+							$this->setFlash('Ocurrio un problema al cargar la imagen de propietario, intentalo nuevamente.', 'flash_bootstrap_error');
+						
+					} else
+						$this->setFlash('Tipo de imagen no permitida.', 'flash_bootstrap_error');
+					
+				}
 				
 				$this->redirect( array('action' => 'docs', $this->Form->id) );
 				
@@ -139,11 +149,22 @@ class FormsController extends AppController {
 			
 			if ($this->Form->save($this->request->data)) {
 				
-				if ( $this->__uploadDocument($this->request->data['Form']['owner_photo'], $id, 'owner_photo') ) 
-					$this->Session->setFlash('Datos de registro capturados correctamente; imagen de propitario cargada correctamente.', 'flash_bootstrap_success');
-				else
-					$this->Session->setFlash('Datos de registro editados correctamente.', 'flash_bootstrap_success');
+				$this->setFlash('Datos de registro editados correctamente.', 'flash_bootstrap_success');
 				
+				if ( !empty($this->request->data['Form']['owner_photo']['name']) ) {
+					
+					if ( $this->__documentValidType($this->request->data['Form']['owner_photo']) ) {
+						
+						if ( $this->__uploadDocument($this->request->data['Form']['owner_photo'], $id, 'owner_photo') ) 
+							$this->setFlash('Imagen de propitario cargada correctamente.', 'flash_bootstrap_success');
+						else
+							$this->setFlash('Ocurrio un problema al cargar la imagen de propietario, intentalo nuevamente.', 'flash_bootstrap_success');
+						
+					} else
+						$this->setFlash('Tipo de imagen no permitida.', 'flash_bootstrap_error');
+					
+				}
+								
 			} else
 				$this->Session->setFlash('Datos de registro no editados, intentalo nuevamente.', 'flash_bootstrap_error');
 			
@@ -263,6 +284,50 @@ class FormsController extends AppController {
 		
 	}
 	
+	public function cedula($form_id = null) {
+		
+		if ( !$form_id )
+			throw new NotFoundException('Identificador de registro no válido.');
+		
+		$this->layout = 'fpdf_cedula';
+		
+		$form = $this->Form->findById($form_id);
+		
+		if ( $form['Form']['birthday'] != '0000-00-00' ) {
+			
+			$today = new DateTime("now");
+			$birthday = new DateTime( $form['Form']['birthday'] );
+			$form['Form']['age'] = $today->diff($birthday)->format('%y');
+			
+		}
+		
+		$form['Form']['recent_photo'] = $this->__getDocument('recent_photo', $form_id);
+		
+		$this->set(compact('form'));
+		
+	}
+	
+	public function etiqueta($form_id = null) {
+		
+		if ( !$form_id )
+			throw new NotFoundException('Identificador de registro no válido.');
+		
+		$this->layout = 'fpdf_etiqueta';
+		
+		$form = $this->Form->findById($form_id);
+		
+		if ( $form['Form']['birthday'] != '0000-00-00' ) {
+			
+			$today = new DateTime("now");
+			$birthday = new DateTime( $form['Form']['birthday'] );
+			$form['Form']['age'] = $today->diff($birthday)->format('%y');
+			
+		}
+		
+		$this->set(compact('form'));
+		
+	}
+	
 	private function __getMonthListInSpanish() {
 		return $months_spanish = array('01' => 'Enero', '02' => 'Febrero', '03' => 'Marzo', '04' => 'Abril', '05' => 'Mayo', '06' => 'Junio', '07' => 'Julio', '08' => 'Agosto', '09' => 'Septiembre', '10' => 'Octubre', '11' => 'Noviembre', '12' => 'Diciembre');
 	}
@@ -306,6 +371,22 @@ class FormsController extends AppController {
 		}
 		
 		return $document_types;
+		
+	}
+	
+	private function __getDocument($document_type = null, $form_id = null) {
+		
+		if ( !$document_type || !$form_id )
+			return false;
+		
+		$document_list = $this->__getDocumentList($form_id);
+		
+		foreach ($document_list as $index => $data) {
+			if ( $document_type == $data['type'] )
+				return $document_list[$index];
+		}
+		
+		return false;
 		
 	}
 	
@@ -421,5 +502,20 @@ class FormsController extends AppController {
     	
     }
 	
+	private function __documentValidType($file_data) {
+		
+		if ( !is_array($file_data) ) return false;
+		
+		if ( empty($file_data['name']) ) return false;
+		
+		$valid_types = Configure::read('document_valid_types');
+		
+		foreach ($valid_types as $index => $type) {
+			if ( preg_match_all("/$type/i", $file_data['type']) )
+				return true;
+		}
+		
+		return false;
+	}
 	
 }

@@ -47,5 +47,20 @@ class AppController extends Controller {
         Configure::write('Authake.useDefaultLayout', true);
         $this->Authake->beforeFilter($this);
     }
+	
+	public function setFlash($message, $element = 'default', $params = array(), $key = 'flash') {
+		
+		$messages = (array)$this->Session->read('Message.multiFlash');
+		
+		$messages[] = array(
+			'message' => $message,
+			'element' => $element,
+			'params' => $params,
+			'key' => $key
+		);
+		
+        $this->Session->write('Message.multiFlash', $messages);
+		
+	}
     
 }

@@ -131,8 +131,17 @@
             </div>
             
             <div id="content">
-                <?php 
-                    echo $this->Session->flash();
+                <?php
+                	if ($this->Session->check('Message.flash'))
+                		echo $this->Session->flash(); // the standard messages
+                	
+                	// multiple messages
+                	if ( $messages = $this->Session->read('Message.multiFlash') ) {
+                		foreach($messages as $index => $flash) {
+                			echo $this->Session->flash("multiFlash.$index");
+						}
+					}
+                    
                     echo $this->fetch('content');
                 ?>
             </div>
