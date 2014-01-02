@@ -54,6 +54,9 @@ class FormsController extends AppController {
 			
 		}
 		
+		// Generate QRcode for existing records
+		$form['Form']['qrcode'] = $this->__generateQrcode($id);
+		
 		$this->set('form', $form);
 		
 	}
@@ -82,6 +85,9 @@ class FormsController extends AppController {
 			
 			if ( $this->Form->save($this->request->data) ) {
 				
+				// QRcode
+				$this->__generateQrcode($this->Form->id);
+				
 				$this->setFlash('Datos de registro capturados correctamente.', 'flash_bootstrap_success');
 				
 				if ( !empty($this->request->data['Form']['owner_photo']['name']) ) {
@@ -94,7 +100,7 @@ class FormsController extends AppController {
 							$this->setFlash('Ocurrio un problema al cargar la imagen de propietario, intentalo nuevamente.', 'flash_bootstrap_error');
 						
 					} else
-						$this->setFlash('Tipo de imagen no permitida.', 'flash_bootstrap_error');
+						$this->setFlash('Tipo de imagen para propietario no permitida.', 'flash_bootstrap_error');
 					
 				}
 				
@@ -206,13 +212,13 @@ class FormsController extends AppController {
 		
 		$this->request->onlyAllow('post', 'delete');
 		
-		if ( $this->__deleteOwnersPhoto($id) ) {	
+		if ( $this->__deleteOwnersPhoto($id) && $this->__deleteQrcode($id) ) {
 			
 			if ( $this->Form->delete() ) {
 				
 				$documents_status = $this->__deleteAllDocuments($id);
 				
-				$this->Session->setFlash("Registro eliminado correctamente. $documents_status ", 'flash_bootstrap_success');
+				$this->Session->setFlash("Registro eliminado correctamente.", 'flash_bootstrap_success');
 				$this->redirect(array('action' => 'index'));
 				
 			} else {
@@ -224,7 +230,9 @@ class FormsController extends AppController {
 			
 		} else {
 			
-			$this->Session->setFlash('El registro no fue eliminado, intentalo nuevamente.', 'flash_bootstrap_error');
+			$this->setFlash('Imagen de propietario o QRcode no eliminados.', 'flash_bootstrap_error');
+			$this->setFlash('El registro no fue eliminado, intentalo nuevamente.', 'flash_bootstrap_error');
+			
 			$this->redirect($this->referer);
 			
 		}
@@ -325,6 +333,48 @@ class FormsController extends AppController {
 		}
 		
 		$this->set(compact('form'));
+		
+	}
+	
+	private function __generateQrcode($form_id = null) {
+		
+		if ( !$form_id )
+			return false;
+		
+		$qrcodes_path = IMAGES . "qrcodes" . DS;
+		$filename = "qrcode_$form_id.png";
+		
+		$png_absolute_file_path = $qrcodes_path . $filename;
+		
+		if ( file_exists($png_absolute_file_path) )
+			return 'qrcodes' . DS . $filename;
+		else {
+			
+			include( APP . 'Vendor' . DS . 'phpqrcode' . DS . 'qrlib.php' );
+			
+			$code_contents = FULL_BASE_URL . DS . 'repufi' . DS . $form_id;
+			
+			QRcode::png($code_contents, $png_absolute_file_path, QR_ECLEVEL_L, 4, 2);
+			
+			return 'qrcodes' . DS . $filename;
+			
+		}
+		
+		return false;
+		
+	}
+	
+	private function __deleteQrcode($form_id = null) {
+		
+		if ( !$form_id )
+			return false;
+		
+		$qrcodes_path = IMAGES . "qrcodes" . DS;
+		$filename = "qrcode_$form_id.png";
+		
+		$png_absolute_file_path = $qrcodes_path . $filename;
+		
+		return unlink($png_absolute_file_path);
 		
 	}
 	

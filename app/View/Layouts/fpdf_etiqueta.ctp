@@ -103,6 +103,8 @@ $pdf->Cell(60, 3, utf8_decode('Ayuntamiento de Cuautitlán Izcalli, Admon. 2013-
 
 $pdf->Image('img/cizcalli_logo.png', 78, 40, 20);
 
+$pdf->Image("img/qrcodes/qrcode_{$form['Form']['id']}.png", 80, 24, 16);
+
 $pdf->Output();
 
 exit;

@@ -24,46 +24,42 @@
     </h3>
     
     <div class="row">
+    	
+    	<div class="span2">
+    		<a href="#" class="thumbnail">
+    			<?php echo $this->Html->image($form['Form']['owner_photo']); ?>
+    		</a>
+    	</div>
+                
+        <div class="span6">
+            
+            <ul class="unstyled detail-block">
+                <li>
+                    Número de folio: <strong><?php echo $form['Form']['id']; ?></strong>
+                </li>
+                <li>
+                    <span class="full-name"><?php echo $form['Form']['full_name']; ?></span> <span class="label"><?php echo $form['Form']['age'] ?> años</span>
+                </li>
+                <li>
+                    Dirección: <strong><?php echo $form['Form']['address']; ?></strong>
+                </li>
+                <li>
+                    Colonia: <strong><?php echo $form['Suburb']['name']; ?></strong>
+                </li>
+                <li>
+                    No. de recibo: <strong><?php echo $form['Form']['receipt_number']; ?></strong>
+                    <?php if ( $form['Form']['status'] == 1 ) : ?>
+                        <span class="label label-success">Pagado</span>
+                    <?php else: ?>
+                        <span class="label label-important">Sin pagar</span>
+                    <?php endif; ?>
+                </li>
+            </ul>
+            
+        </div>
         
-        <div class="span8">
-            
-            <div class="row">
-                
-                <div class="span2">
-                    <a href="#" class="thumbnail">
-                        <?php echo $this->Html->image($form['Form']['owner_photo']); ?>
-                    </a>
-                </div>
-                
-                <div class="span6">
-                    
-                    <ul class="unstyled detail-block">
-                        <li>
-                            Número de folio: <strong><?php echo $form['Form']['id']; ?></strong>
-                        </li>
-                        <li>
-                            <span class="full-name"><?php echo $form['Form']['full_name']; ?></span> <span class="label"><?php echo $form['Form']['age'] ?> años</span>
-                        </li>
-                        <li>
-                            Dirección: <strong><?php echo $form['Form']['address']; ?></strong>
-                        </li>
-                        <li>
-                            Colonia: <strong><?php echo $form['Suburb']['name']; ?></strong>
-                        </li>
-                        <li>
-                            No. de recibo: <strong><?php echo $form['Form']['receipt_number']; ?></strong>
-                            <?php if ( $form['Form']['status'] == 1 ) : ?>
-                                <span class="label label-success">Pagado</span>
-                            <?php else: ?>
-                                <span class="label label-important">Sin pagar</span>
-                            <?php endif; ?>
-                        </li>
-                    </ul>
-                    
-                </div>
-                
-            </div>
-            
+        <div class="span4 text-right">
+        	<?php echo $this->Html->image($form['Form']['qrcode'], array('alt' => 'QRcode', 'title' => 'QRcode', 'class' => 'img-polaroid')); ?>
         </div>
         
     </div>
