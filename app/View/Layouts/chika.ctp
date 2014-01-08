@@ -37,9 +37,9 @@
                         <li class="divider-vertical"></li>
                     </ul>
                     
-                    <form class="navbar-search pull-left">
+                    <!--form class="navbar-search pull-left">
                       <input type="text" class="search-query" placeholder="Buscar">
-                    </form>
+                    </form-->
                     
                     <?php if ( $this->Session->read('Authake.login') && $this->Session->read('Authake.group_names.0') == 'Administrators' ) : ?>
                     <ul class="nav">
@@ -72,7 +72,7 @@
                                             <?php echo $this->Html->link('Lista de categorias', array('controller' => 'categories', 'action' => 'index')); ?>
                                         </li>
                                         <li>
-                                            <?php echo $this->Html->link('Agregar categoria', array('controller' => 'categories', 'action' => 'add')); ?>
+                                            <?php echo $this->Html->link('Agregar categoría', array('controller' => 'categories', 'action' => 'add')); ?>
                                         </li>
                                     </ul>
                                 </li>
@@ -89,12 +89,12 @@
                                     </ul>
                                 </li>
                                 
-                                <li>
+                                <!--li>
                                     <?php echo $this->Html->link('Reportes', '/reportes'); ?>
                                 </li>
                                 <li>
                                     <?php echo $this->Html->link('Estatus de comercios', '/estatus'); ?>
-                                </li>
+                                </li-->
                             </ul>
                         </li>
                     </ul>

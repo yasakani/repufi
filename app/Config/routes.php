@@ -47,6 +47,11 @@
 	// Alias for documents
 	Router::connect('/documentos/*', array('controller' => 'forms', 'action' => 'docs'));
 	
+	// Alias routes for categories
+	Router::connect('/categorias', array('controller' => 'categories', 'action' => 'index'));
+	Router::connect('/categorias/:action/*', array('controller' => 'categories'));
+	Router::connect('/categorias/*', array('controller' => 'categories'));
+	
 /**
  * Load all plugin routes. See the CakePlugin documentation on
  * how to customize the loading of plugin routes.

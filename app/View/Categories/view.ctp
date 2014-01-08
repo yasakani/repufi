@@ -1,109 +1,73 @@
-<div class="categories view">
-<h2><?php  echo __('Category'); ?></h2>
-	<dl>
-		<dt><?php echo __('Id'); ?></dt>
-		<dd>
-			<?php echo h($category['Category']['id']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Name'); ?></dt>
-		<dd>
-			<?php echo h($category['Category']['name']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Created'); ?></dt>
-		<dd>
-			<?php echo h($category['Category']['created']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Modified'); ?></dt>
-		<dd>
-			<?php echo h($category['Category']['modified']); ?>
-			&nbsp;
-		</dd>
-	</dl>
-</div>
-<div class="actions">
-	<h3><?php echo __('Actions'); ?></h3>
-	<ul>
-		<li><?php echo $this->Html->link(__('Edit Category'), array('action' => 'edit', $category['Category']['id'])); ?> </li>
-		<li><?php echo $this->Form->postLink(__('Delete Category'), array('action' => 'delete', $category['Category']['id']), null, __('Are you sure you want to delete # %s?', $category['Category']['id'])); ?> </li>
-		<li><?php echo $this->Html->link(__('List Categories'), array('action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Category'), array('action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('List Forms'), array('controller' => 'forms', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Form'), array('controller' => 'forms', 'action' => 'add')); ?> </li>
-	</ul>
-</div>
-<div class="related">
-	<h3><?php echo __('Related Forms'); ?></h3>
-	<?php if (!empty($category['Form'])): ?>
-	<table cellpadding = "0" cellspacing = "0">
-	<tr>
-		<th><?php echo __('Id'); ?></th>
-		<th><?php echo __('User Id'); ?></th>
-		<th><?php echo __('Name'); ?></th>
-		<th><?php echo __('Lastname Pater'); ?></th>
-		<th><?php echo __('Lastname Mater'); ?></th>
-		<th><?php echo __('Address'); ?></th>
-		<th><?php echo __('Suburb Id'); ?></th>
-		<th><?php echo __('Age'); ?></th>
-		<th><?php echo __('Receipt Number'); ?></th>
-		<th><?php echo __('Commerce Location'); ?></th>
-		<th><?php echo __('Commece Latitude'); ?></th>
-		<th><?php echo __('Commerce Longitude'); ?></th>
-		<th><?php echo __('Commerce Order'); ?></th>
-		<th><?php echo __('Commerce Width'); ?></th>
-		<th><?php echo __('Commerce Long'); ?></th>
-		<th><?php echo __('Commerce Squedule'); ?></th>
-		<th><?php echo __('Squedule Preset Id'); ?></th>
-		<th><?php echo __('Status'); ?></th>
-		<th><?php echo __('Category Id'); ?></th>
-		<th><?php echo __('Modified'); ?></th>
-		<th><?php echo __('Created'); ?></th>
-		<th><?php echo __('Created By'); ?></th>
-		<th><?php echo __('Modified By'); ?></th>
-		<th class="actions"><?php echo __('Actions'); ?></th>
-	</tr>
-	<?php
-		$i = 0;
-		foreach ($category['Form'] as $form): ?>
-		<tr>
-			<td><?php echo $form['id']; ?></td>
-			<td><?php echo $form['user_id']; ?></td>
-			<td><?php echo $form['name']; ?></td>
-			<td><?php echo $form['lastname_pater']; ?></td>
-			<td><?php echo $form['lastname_mater']; ?></td>
-			<td><?php echo $form['address']; ?></td>
-			<td><?php echo $form['suburb_id']; ?></td>
-			<td><?php echo $form['age']; ?></td>
-			<td><?php echo $form['receipt_number']; ?></td>
-			<td><?php echo $form['commerce_location']; ?></td>
-			<td><?php echo $form['commece_latitude']; ?></td>
-			<td><?php echo $form['commerce_longitude']; ?></td>
-			<td><?php echo $form['commerce_order']; ?></td>
-			<td><?php echo $form['commerce_width']; ?></td>
-			<td><?php echo $form['commerce_long']; ?></td>
-			<td><?php echo $form['commerce_squedule']; ?></td>
-			<td><?php echo $form['squedule_preset_id']; ?></td>
-			<td><?php echo $form['status']; ?></td>
-			<td><?php echo $form['category_id']; ?></td>
-			<td><?php echo $form['modified']; ?></td>
-			<td><?php echo $form['created']; ?></td>
-			<td><?php echo $form['created_by']; ?></td>
-			<td><?php echo $form['modified_by']; ?></td>
-			<td class="actions">
-				<?php echo $this->Html->link(__('View'), array('controller' => 'forms', 'action' => 'view', $form['id'])); ?>
-				<?php echo $this->Html->link(__('Edit'), array('controller' => 'forms', 'action' => 'edit', $form['id'])); ?>
-				<?php echo $this->Form->postLink(__('Delete'), array('controller' => 'forms', 'action' => 'delete', $form['id']), null, __('Are you sure you want to delete # %s?', $form['id'])); ?>
-			</td>
-		</tr>
-	<?php endforeach; ?>
-	</table>
-<?php endif; ?>
-
-	<div class="actions">
-		<ul>
-			<li><?php echo $this->Html->link(__('New Form'), array('controller' => 'forms', 'action' => 'add')); ?> </li>
+<div id="categories-view">
+	
+	<h2>Detalles de la categoría</h2>
+	
+	<div class="text-right">
+		<ul class="inline">
+			<li><?php echo $this->Html->link('Lista de categorías', array('action' => 'index'), array('class' => 'btn btn-small')); ?> </li>
+			<li><?php echo $this->Html->link('Agregar categoría', array('action' => 'add'), array('class' => 'btn btn-small btn-primary')); ?> </li>
+			<li><?php echo $this->Html->link('Editar', array('action' => 'edit', $category['Category']['id']), array('class' => 'btn btn-small btn-info')); ?> </li>
+			<li><?php echo $this->Form->postLink('Eliminar', array('action' => 'delete', $category['Category']['id']), array('class' => 'btn btn-small btn-danger'), '¿Eliminar categoría?'); ?></li>
 		</ul>
 	</div>
+	
+	<dl class="dl-horizontal">
+		<dt>ID</dt>
+		<dd>
+			<h4><?php echo h($category['Category']['id']); ?></h4>
+		</dd>
+		<dt>Nombre</dt>
+		<dd>
+			<h4><?php echo h($category['Category']['name']); ?></h4>
+		</dd>
+		<dt>Fecha de creación</dt>
+		<dd>
+			<h4><?php echo h($category['Category']['created']); ?></h4>
+		</dd>
+		<dt>Fecha de modificación</dt>
+		<dd>
+			<h4><?php echo h($category['Category']['modified']); ?></h4>
+		</dd>
+	</dl>
+	
+	<h3>
+		Registros asociados a esta categoría
+	</h3>
+	
+	<?php if (!empty($category['Form'])): ?>
+	<table class="table">
+		
+		<thead>
+			<tr>
+				<th>Folio</th>
+				<th>Nombre del propietario</th>
+				<th>Ubicación</th>
+				<th>Superficie</th>
+				<th>Estatus</th>
+			</tr>
+		</thead>
+		
+		<tbody>
+			<?php foreach ($category['Form'] as $form): ?>
+			<tr>
+				<td><?php echo $form['id']; ?></td>
+				<td><?php echo $this->Html->link($form['full_name'], array('controller' => 'forms', 'action' => 'view', $form['id'])); ?></td>
+				<td><?php echo $form['commerce_location']; ?></td>
+				<td><?php echo round($form['commerce_square_meters'], 2); ?>m<sup>2</sup></td>
+				<td>
+	            	<?php if ( $form['status'] == '0' ) : ?>
+	            	<span class="label label-important">No pagado</span>
+	            	<?php else: ?>
+	            	<span class="label label-success">Pagado</span>
+	            	<?php endif; ?>
+				</td>
+			</tr>
+			<?php endforeach; ?>
+		</tbody>
+		
+	</table>
+	<?php else: ?>
+		<h5>No existen registros asociados a esta categoría.</h5>
+	<?php endif; ?>
+	
 </div>
