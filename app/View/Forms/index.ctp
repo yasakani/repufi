@@ -46,7 +46,13 @@
             <td><?php echo $this->Html->link($form['Form']['full_name'], array('controller' => 'forms', 'action' => 'view', $form['Form']['id'])); ?></td>
             <td><?php echo h($form['Form']['commerce_location']); ?></td>
             <td><?php echo round($form['Form']['commerce_square_meters'], 2); ?>m<sup>2</sup></td>
-            <td><?php echo ( !empty($form['Form']['receipt_number']) || $form['Form']['receipt_number'] != 0) ? 'Pagado': 'No pagado'; ?></td>
+            <td>
+            	<?php if ( $form['Form']['status'] == '0' ) : ?>
+            	<span class="label label-important">No pagado</span>
+            	<?php else: ?>
+            	<span class="label label-success">Pagado</span>
+            	<?php endif; ?>
+            </td>
         </tr>
         <?php endforeach; ?>
         

@@ -62,7 +62,7 @@ $pdf->AddPage('L', array(100, 62));
 
 $pdf->SetFont('Arial', 'B', 8);
 
-$pdf->MultiCell(0, 3, utf8_decode('"REPUFI": REGISTRO DE PUESTOS FIJOS, SEMIFIJOS Y AMBULANTES'), 0, 'C');
+$pdf->MultiCell(0, 3, utf8_decode('"REPUFI" REGISTRO DE PUESTOS FIJOS, SEMIFIJOS Y AMBULANTES'), 0, 'C');
 
 $pdf->Line(3, 10, 97, 10);
 
@@ -78,18 +78,18 @@ $pdf->SetFontSize(8);
 $pdf->Line(3, 23, 97, 23);
 
 $pdf->Ln(9);
-$pdf->Cell(70, 3, utf8_decode("DIRECCIÓN: {$form['Form']['address']}"), 0, 0, 'L');
+$pdf->Cell(70, 3, utf8_decode("DIRECCIÓN: {$form['Form']['commerce_location']}"), 0, 0, 'L');
 
 $pdf->Ln(6);
-$pdf->Cell(70, 3, utf8_decode("COLONIA: {$form['Suburb']['name']}"), 0, 0, 'L');
+$pdf->Cell(70, 3, utf8_decode("COLONIA: {$form['Form']['commerce_suburb']}"), 0, 0, 'L');
 
 $pdf->Ln(6);
 $pdf->Cell(70, 3, utf8_decode("GIRO: {$form['Form']['commerce_order']}"), 0, 0, 'L');
 
 $pdf->Line(3, 42, 80, 42);
 
-$first_day = strftime("%d %B %Y", mktime(0, 0, 0, 1, 1, date("Y")));
-$last_day = strftime("%d %B %Y", mktime(0, 0, 0, 12, 31, date("Y")));
+$first_day = strftime("%e DE %B %Y", mktime(0, 0, 0, 1, 1, 2013));
+$last_day = strftime("%e %B %Y", mktime(0, 0, 0, 12, 31, 2013));
 
 $pdf->Ln(12);
 $pdf->Cell(1, 3, '');
@@ -98,8 +98,8 @@ $pdf->Cell(60, 3, strtoupper(utf8_decode("VIGENCIA: $first_day AL $last_day")), 
 $pdf->SetFont("Arial", 'B', 8);
 
 $pdf->Ln(4);
-$pdf->Cell(1, 3, '');
-$pdf->Cell(60, 3, utf8_decode('Ayuntamiento de Cuautitlán Izcalli, Admon. 2013-2015'), 0, 0, 'L');
+$pdf->Cell(6, 3, '');
+$pdf->Cell(60, 3, utf8_decode('Ayuntamiento de Cuautitlán Izcalli, 2013-2015'), 0, 0, 'L');
 
 $pdf->Image('img/cizcalli_logo.png', 78, 40, 20);
 

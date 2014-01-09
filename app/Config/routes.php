@@ -34,14 +34,12 @@
 
 	// Simple logout in spanish
 	Router::connect('/usuarios', array('plugin' => 'authake', 'controller' => 'users', 'action' => 'index'));
-	Router::connect('/colonias', array('controller' => 'suburbs', 'action' => 'index'));
-    Router::connect('/colonias/agregar', array('controller' => 'suburbs', 'action' => 'add'));
-	Router::connect('/captura', array('controller' => 'forms', 'action' => 'add'));
 	Router::connect('/salir', array('plugin' => 'authake', 'controller' => 'user', 'action' => 'logout'));
 	
 	Router::connect('/mapa', array('controller' => 'forms', 'action' => 'map'));
 	
 	// Alias routes for forms
+	Router::connect('/captura', array('controller' => 'forms', 'action' => 'add'));
 	Router::connect('/puestos/:action/*', array('controller' => 'forms'));
 	
 	// Alias for documents
@@ -49,8 +47,23 @@
 	
 	// Alias routes for categories
 	Router::connect('/categorias', array('controller' => 'categories', 'action' => 'index'));
+	Router::connect('/categorias/agregar', array('controller' => 'categories', 'action' => 'add'));
+	Router::connect('/categorias/editar/*', array('controller' => 'categories', 'action' => 'edit'));
+	Router::connect('/categorias/detalle/*', array('controller' => 'categories', 'action' => 'view'));
+	Router::connect('/categorias/eliminar/*', array('controller' => 'categories', 'action' => 'delete'));
 	Router::connect('/categorias/:action/*', array('controller' => 'categories'));
-	Router::connect('/categorias/*', array('controller' => 'categories'));
+	
+	// Alies routes for suburbs
+	Router::connect('/colonias', array('controller' => 'suburbs', 'action' => 'index'));
+    Router::connect('/colonias/agregar', array('controller' => 'suburbs', 'action' => 'add'));
+	
+	// Alias routes for schedules
+	Router::connect('/horarios', array('controller' => 'schedules', 'action' => 'index'));
+	Router::connect('/horarios/agregar', array('controller' => 'schedules', 'action' => 'add'));
+	Router::connect('/horarios/editar/*', array('controller' => 'schedules', 'action' => 'edit'));
+	Router::connect('/horarios/detalle/*', array('controller' => 'schedules', 'action' => 'view'));
+	Router::connect('/horarios/eliminar/*', array('controller' => 'schedules', 'action' => 'delete'));
+	Router::connect('/horarios/:action/*', array('controller' => 'schedules'));
 	
 /**
  * Load all plugin routes. See the CakePlugin documentation on

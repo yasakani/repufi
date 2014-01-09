@@ -46,6 +46,9 @@ class FormsController extends AppController {
 		$form['Form']['schedule'] = $this->__getSchedule($form);
 		$form['Form']['commerce_square_meters'] = round($form['Form']['commerce_square_meters'], 2);
 		
+		$commerce_suburb_data = $this->Form->Suburb->findById($form['Form']['commerce_suburb_id']);
+		$form['Form']['commerce_suburb'] = ( !empty($commerce_suburb_data) ) ? $commerce_suburb_data['Suburb']['name'] : 'No especificada';
+		
 		if ( $form['Form']['birthday'] != '0000-00-00' ) {
 			
 			$today = new DateTime("now");
@@ -126,6 +129,9 @@ class FormsController extends AppController {
 		    
 		    $months_spanish = $this->__getMonthListInSpanish();
 		    $this->set(compact('months_spanish'));
+			
+			$hours_day = $this->hoursDay();
+			$this->set(compact('hours_day'));
 		    
 		}
 	}
@@ -180,6 +186,8 @@ class FormsController extends AppController {
 		
 		$options = array('conditions' => array('Form.' . $this->Form->primaryKey => $id));
 		$this->request->data = $this->Form->find('first', $options);
+		
+		$this->request->data['Form']['birthday'] = $this->__getFixedBirthday($this->request->data);
 		
 	    $suburbs = $this->Form->Suburb->find('list');
 	    $this->set(compact('suburbs'));
@@ -260,11 +268,29 @@ class FormsController extends AppController {
 		
 		$caption = $this->__getDocumentCaptionFromType($this->request->data['Form']['type']);
 		
-		// Replace document
-		if ( $this->__uploadDocument($this->request->data['Form']['file'], $this->request->data['Form']['form_id'], $this->request->data['Form']['type']) )
-			$this->Session->setFlash("El documento $caption se cargo correctamente.", 'flash_bootstrap_success');
-		else
-			$this->Session->setFlash("El documento $caption no se cargo correctamente.", 'flash_bootstrap_error');
+		// Valid document filetype
+		if ( $this->__documentValidType($this->request->data['Form']['file']) || $this->request->data['Form']['file']['error'] == 1 ) {
+			
+			// Filesize
+			if ( $this->request->data['Form']['file']['size'] <= Configure::read('document_image_size') ) {
+				
+				// Delete current file
+				if ( $this->__deleteDocument($this->request->data['Form']['form_id'], $this->request->data['Form']['type']) ) {
+					
+					// Replace document
+					if ( $this->__uploadDocument($this->request->data['Form']['file'], $this->request->data['Form']['form_id'], $this->request->data['Form']['type']) )
+						$this->Session->setFlash("El documento $caption se cargo correctamente.", 'flash_bootstrap_success');
+					else
+						$this->Session->setFlash("El documento $caption no se cargo correctamente.", 'flash_bootstrap_error');
+					
+				} else 
+					$this->Session->setFlash("Ocurrio un problema al cargar documento, intentalo nuevamente.", 'flash_bootstrap_error');
+				
+			} else
+				$this->Session->setFlash("Archivo de imagen demasiado grande.", 'flash_bootstrap_error');
+			
+		} else
+			$this->Session->setFlash("Tipo de imagen para documento no permitida.", 'flash_bootstrap_error');
 		
 		$this->redirect( array('action' => 'docs', $this->request->data['Form']['form_id']) );
 		
@@ -309,6 +335,7 @@ class FormsController extends AppController {
 			
 		}
 		
+		$form['Form']['owner_photo'] = $this->__getOwnersPhoto($form_id);
 		$form['Form']['recent_photo'] = $this->__getDocument('recent_photo', $form_id);
 		
 		$this->set(compact('form'));
@@ -332,7 +359,66 @@ class FormsController extends AppController {
 			
 		}
 		
+		$commerce_suburb_data = $this->Form->Suburb->findById($form['Form']['commerce_suburb_id']);
+		$form['Form']['commerce_suburb'] = ( !empty($commerce_suburb_data) ) ? $commerce_suburb_data['Suburb']['name'] : 'No especificada';
+		
 		$this->set(compact('form'));
+		
+	}
+	
+	public function fixstatus() {
+		
+		$forms = $this->Form->find('all');
+		
+		foreach ($forms as $index => $form) {
+			
+			$this->Form->create();
+			
+			$this->Form->id = $form['Form']['id'];
+			
+			$receipt_number = $form['Form']['receipt_number'];
+			$status = $form['Form']['status'];
+			
+			if ( $receipt_number != '0' && $status != '1' ) {
+				
+				$data['Form']['status'] = 1;
+				
+				if ( $this->Form->save( $data ) )
+					debug("Resgistro: ID:{$form['Form']['id']}, Recibo: $receipt_number, Status: $status [CORREGIDO]");
+				else
+					debug("Registro: ID:{$form['Form']['id']}, Datos sin actualizar [ERROR]");
+				
+			} else {
+				
+				debug("Registro: ID:{$form['Form']['id']} no requiere corrección de estatus.");
+				
+			}
+			
+		}
+		
+		exit;
+		
+	}
+	
+	private function __getFixedBirthday($form_data = array()) {
+		
+		if ( empty($form_data) )
+			return false;
+		
+		$age = $form_data['Form']['age'];
+		$birthday = $form_data['Form']['birthday'];
+		
+		if ( $age != '0' && $birthday == '0000-00-00' ) {
+			
+			$created = $form_data['Form']['created'];
+			$created_timestamp = strtotime($created);
+			
+			$birthday_fix = mktime(date("H", $created_timestamp), date("i", $created_timestamp), date("s", $created_timestamp), date("n", $created_timestamp), date("j", $created_timestamp), date("Y", $created_timestamp) - $age);
+			return $birthday_fix_date = date("Y-m-d", $birthday_fix);
+			
+		}
+		
+		return $birthday;
 		
 	}
 	
@@ -406,10 +492,12 @@ class FormsController extends AppController {
 		
 		foreach ( $document_types as $index => $data ) {
 			
-			$filename = $documents_path . DS . $data['type'] . DS . $form_id . '.jpg';
+			$ext = $this->__getDocumentImageExt($form_id, $data['type']);
+			
+			$filename = $documents_path . DS . $data['type'] . DS . $form_id . '.' . $ext;
 			
 			if ( file_exists( $filename ) ) {
-				$document_types[$index]['img'] = Configure::read('documents_folder_name') . DS . $data['type'] . DS . $form_id . '.jpg';
+				$document_types[$index]['img'] = Configure::read('documents_folder_name') . DS . $data['type'] . DS . $form_id . '.' . $ext;
 				$document_types[$index]['date'] = ucwords( strftime("%A %e, %B %Y @ %k:%M hrs.", filemtime( $filename ) ) );
 				$document_types[$index]['exists'] = 1;
 			} else { 
@@ -434,6 +522,26 @@ class FormsController extends AppController {
 		foreach ($document_list as $index => $data) {
 			if ( $document_type == $data['type'] )
 				return $document_list[$index];
+		}
+		
+		return false;
+		
+	}
+	
+	private function __getDocumentImageExt($form_id, $document_type) {
+		
+		// Get path for documents
+		$documents_path = Configure::read('documents_path');
+		
+		// Get valid images for documents
+		$documents_image_types = Configure::read('document_valid_image_types');
+		
+		foreach ( $documents_image_types as $mimetype => $extensions ) {
+			foreach ( $extensions as $ext ) {
+				if ( file_exists( $documents_path . DS . $document_type . DS . "$form_id.$ext" ) ) {
+					return $ext;
+				}
+			}
 		}
 		
 		return false;
@@ -474,7 +582,9 @@ class FormsController extends AppController {
 		
 		if ( !$form_id || !$type ) return false;
 		
-		$document_path = Configure::read('documents_path') . DS . $type . DS . $form_id . '.jpg';
+		$ext = $this->__getDocumentImageExt($form_id, $type);
+		
+		$document_path = Configure::read('documents_path') . DS . $type . DS . "$form_id.$ext";
 		
 		return ( file_exists($document_path) ) ? unlink($document_path) : true;
 		
@@ -558,14 +668,15 @@ class FormsController extends AppController {
 		
 		if ( empty($file_data['name']) ) return false;
 		
-		$valid_types = Configure::read('document_valid_types');
+		$valid_types = Configure::read('document_valid_image_types');
 		
-		foreach ($valid_types as $index => $type) {
-			if ( preg_match_all("/$type/i", $file_data['type']) )
+		foreach ($valid_types as $mimetype => $extensions) {
+			if ( $file_data['type'] == $mimetype )
 				return true;
 		}
 		
 		return false;
+		
 	}
 	
 }

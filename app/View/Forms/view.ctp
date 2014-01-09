@@ -73,7 +73,10 @@
             
             <ul class="unstyled detail-block">
                 <li>
-                    Ubicacion del puesto: <strong><?php echo $form['Form']['commerce_location']; ?></strong>
+                    Ubicación del puesto: <strong><?php echo $form['Form']['commerce_location']; ?></strong>
+                </li>
+                <li>
+                    Colonia de ubicación: <strong><?php echo $form['Form']['commerce_suburb']; ?></strong>
                 </li>
                 <li>
                     Categoría: <strong><?php echo $form['Category']['name']; ?></strong>

@@ -39,7 +39,7 @@ class AppController extends Controller {
     
     public function beforeFilter() {
     	setlocale(LC_TIME, 'es_MX.utf8');
-        $this->layout = 'chika';
+        $this->layout = 'repufi';
         $this->auth();
     }
     
@@ -60,6 +60,19 @@ class AppController extends Controller {
 		);
 		
         $this->Session->write('Message.multiFlash', $messages);
+		
+	}
+	
+	public function hoursDay() {
+			
+		$hours_a_day = array();
+			
+		for ( $i = 0; $i <= 1410; $i = $i + 30) {
+			$tmp_timestamp = mktime(0, 0 + $i, 0, date('m'), date('d'), date('Y'));
+			$hours_a_day[] = date('H:i', $tmp_timestamp);
+		}
+		
+		return $hours_a_day;
 		
 	}
     

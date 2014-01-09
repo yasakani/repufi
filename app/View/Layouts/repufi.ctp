@@ -57,16 +57,16 @@
                                     <a tabindex="-1" href="#">Colonias</a>
                                     <ul class="dropdown-menu">
                                         <li>
-                                            <?php echo $this->Html->link('Lista de Colonias', '/colonias'); ?>
+                                            <?php echo $this->Html->link('Lista de colonias', array('controller' => 'suburbs', 'action' => 'index')); ?>
                                         </li>
                                         <li>
-                                            <?php echo $this->Html->link('Agregar Colonia', '/colonias/agregar'); ?>
+                                            <?php echo $this->Html->link('Agregar colonia', array('controller' => 'suburbs', 'action' => 'add')); ?>
                                         </li>
                                     </ul>
                                 </li>
                                 
                                 <li class="dropdown-submenu">
-                                    <a tabindex="-1" href="#">Categorias para puestos</a>
+                                    <a tabindex="-1" href="#">Categorías</a>
                                     <ul class="dropdown-menu">
                                         <li>
                                             <?php echo $this->Html->link('Lista de categorias', array('controller' => 'categories', 'action' => 'index')); ?>
@@ -78,7 +78,7 @@
                                 </li>
                                 
                                 <li class="dropdown-submenu">
-                                    <a tabindex="-1" href="#">Horarios de establecimientos</a>
+                                    <a tabindex="-1" href="#">Horarios</a>
                                     <ul class="dropdown-menu">
                                         <li>
                                             <?php echo $this->Html->link('Lista de horarios', array('controller' => 'schedules', 'action' => 'index')); ?>

@@ -4,6 +4,10 @@
     	Administración de documentos
     </h3>
     
+    <div class="alert alert-info">
+    	Solo se permiten imagenes del tipo <strong>JPG</strong> no mayores a <strong>1MB</strong>.
+    </div>
+    
     <div class="row">
         
         <div class="span12">

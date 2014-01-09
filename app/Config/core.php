@@ -362,11 +362,22 @@ Configure::write('document_types', array(
 		8 => array('type' => 'fiscal', 'caption' => 'Cédula de identificación Fiscal', 'img' => null),
 		9 => array('type' => 'ambient', 'caption' => 'Dictamen favorable', 'img' => null)));
 
-Configure::write('document_valid_types', array('jpg', 'jpeg'));
+Configure::write('document_valid_image_types', array('image/jpeg' => array('jpg', 'jpeg', 'jpe')));
+Configure::write('document_image_size', 1048576);
 
 Configure::write('documents_folder_name', 'documents');
 Configure::write('documents_path', IMAGES . Configure::read('documents_folder_name'));
 Configure::write('owners_photos_path', Configure::read('documents_path') . DS . 'owners');
 
-
-
+/**
+ * Configuration for schedules
+ */
+Configure::write('week', array(
+	array('key' => 'monday', 'label' => 'Lunes'),
+	array('key' => 'tuesday', 'label' => 'Martes'),
+	array('key' => 'wednesday', 'label' => 'Miércoles'),
+	array('key' => 'thursday', 'label' => 'Jueves'),
+	array('key' => 'friday', 'label' => 'Viernes'),
+	array('key' => 'saturday', 'label' => 'Sábado'),
+	array('key' => 'sunday', 'label' => 'Domingo')
+));

@@ -74,6 +74,9 @@
 	                    <?php echo $this->Form->input('commerce_location', array('label' => 'Lugar de ubicación', 'class' => 'span3')); ?>
 	                </div>
 	                <div class="span3">
+	                	<?php echo $this->Form->input('commerce_suburb_id', array('label' => 'Colonia', 'options' => $suburbs)); ?>
+	                </div>
+	                <div class="span3">
 	                    <label>Dimensiones del establecimiento</label>
                         <?php echo $this->Form->input('commerce_width', array('label' => false, 'div' => false, 'class' => 'input-small', 'placeholder' => 'Ancho')); ?>
                         <?php echo $this->Form->input('commerce_long', array('label' => false, 'div' => false, 'class' => 'input-small', 'placeholder' => 'Largo')); ?>
@@ -92,7 +95,15 @@
 	            
 	            <div class="row">
 	                <div class="span6">
-	                    <?php echo $this->Form->input('schedule_id', array('label' => 'Horario', 'class' => 'span3')); ?>
+	                	<div class="row">
+	                		<div class="span1">
+	                			<?php echo $this->Form->label('schedule_id', 'Horario'); ?>
+	                		</div>
+	                		<div class="span2">
+	                			<a href="#schedule-add-form-modal" role="button" data-toggle="modal" title="Agregar horario">Agregar horario</a>
+	                		</div>
+	                	</div>
+	                    <?php echo $this->Form->input('schedule_id', array('label' => false, 'class' => 'span3')); ?>
 	                </div>
 	            </div>
 	            
@@ -109,3 +120,6 @@
 	<?php echo $this->Form->end(); ?>
 	
 </div>
+
+<!-- Add schedule modal -->
+<?php echo $this->element('schedules_add_schedule_form_modal', array('hours_day' => $hours_day)); ?>

@@ -63,7 +63,6 @@ class PDF extends FPDF {
 		
 		$this->Image('img/cizcalli_logo.png', 6, 5, 20);
 		$this->MultiCell(0, 3, $header_txt, 0, 'C');
-		$this->Image('img/cizcalli_logo.png', 114, 5, 20);
 		
 	}
 	
@@ -80,8 +79,15 @@ $pdf->SetFont('Times', '', 8);
 $pdf->Ln(6);
 $pdf->Cell(0, 3, utf8_decode('CÉDULA PARA PUESTOS FIJOS, SEMIFIJOS O COMERCIATES AMBULANTES.'), 0, 0, 'C');
 
+$pdf->Image("img" . DS . "{$form['Form']['owner_photo']}", 7, 33, 24, 30);
+
 $pdf->Image('img/cizcalli_logo.png', 66, 33, 37);
-$pdf->Image('img/cizcalli_logo.png', 18, 50, 13);
+
+// owner's photo watermark
+$pdf->Image('img/cizcalli_logo.png', 23, 54, 13);
+
+// qrcode
+$pdf->Image("img/qrcodes/qrcode_{$form['Form']['id']}.png", 106, 33, 23);
 
 $pdf->Ln(8);
 $pdf->Cell(0, 3, 'DATOS PERSONALES:', 0, 0, 'C');
@@ -102,11 +108,11 @@ $pdf->Ln(4);
 $pdf->Cell(25, 3, '', 0);
 $pdf->Cell(0, 3, utf8_decode("Edad: {$form['Form']['age']} años"), 0, 0, 'L');
 
-$pdf->Ln(4);
-$pdf->Cell(25, 3, '', 0);
+$pdf->Ln(6);
+$pdf->Cell(104, 3, '', 0);
 $pdf->Cell(0, 3, "Folio: {$form['Form']['id']}", 0, 0, 'L');
 
-$pdf->Ln(10);
+$pdf->Ln(8);
 $pdf->Cell(0, 3, 'DATOS DEL PUESTO FIJO, SEMIFIJO O AMBULANTE.', 0, 0, 'C');
 
 $pdf->Ln(5);
@@ -116,14 +122,20 @@ $pdf->Ln(4);
 $pdf->Cell(0, 3, utf8_decode("Giro: {$form['Form']['commerce_order']}"), 0, 0, 'L');
 
 $pdf->Ln(4);
-$pdf->Cell(0, 3, utf8_decode("Medidas: {$form['Form']['commerce_width']}m de ancho por {$form['Form']['commerce_long']}m de largo."), 0, 0, 'L');
+$pdf->Cell(0, 3, utf8_decode("Medidas: {$form['Form']['commerce_width']}x{$form['Form']['commerce_long']} mts."), 0, 0, 'L');
 
 $pdf->Ln(4);
 $pdf->Cell(0, 3, utf8_decode("Horario: {$form['Schedule']['name']}"), 0, 0, 'L');
 
-$pdf->Image("img" . DS . "{$form['Form']['recent_photo']['img']}", 100, 71, 0, 18);
+$pdf->Ln(6);
+$pdf->SetFont('Times', '', 7);
+$pdf->Cell(85, 3, '', 0);
+$pdf->Cell(0, 3, 'Foto del puesto', 0, 0, 'C');
+$pdf->SetFont('Times', '', 8);
 
-$pdf->Ln(10);
+$pdf->Image("img" . DS . "{$form['Form']['recent_photo']['img']}", 100, 71, 25, 18);
+
+$pdf->Ln(4);
 $pdf->Cell(0, 3, 'FUNDAMENTO LEGAL', 0, 0, 'C');
 
 $fundamento_legal = utf8_decode('La presente se expide con fundamento en el segundo párrafo de la fraccion II del artículo 115 de la Constitución Política de los Estados Unidos Mexicanos; 123 y 124 de la Constitución Política del Estado Libre y Soberano de México; 2, 3, 31 fracción I y 164 de la Ley Organica del Estado de México; Segundo párrafo del 154 BIS del Código Financiero del Estado de México y Municipios; 54, 55, 56 y 63 del Bando Municipal 2013-2015 de Cuautitlán Izcalli Estado de México; 16 fracción XX del Reglamento Orgánico de la Administración Publica del Municipio de Cuautitlán Izcalli; párrafo segundo del artículo 13 del Reglamento Municipal de Procedimientos Administrativos de Cuautitlan Izcalli, México.');
@@ -136,8 +148,8 @@ $pdf->SetFont('Times', '', 8);
 $pdf->Ln(5);
 $pdf->Cell(0, 3, 'VIGENCIA', 0, 0, 'C');
 
-$first_day = strftime("%d de %B del %Y", mktime(0, 0, 0, 1, 1, date("Y")));
-$last_day = strftime("%d de %B del %Y", mktime(0, 0, 0, 12, 31, date("Y")));
+$first_day = strftime("%d de Enero del %Y", mktime(0, 0, 0, 1, 1, date("Y")));
+$last_day = strftime("%d de Diciembre del %Y", mktime(0, 0, 0, 12, 31, date("Y")));
 
 $pdf->Ln(4);
 $pdf->SetFont('Times', 'U', 9);
@@ -146,7 +158,7 @@ $pdf->Cell(0, 4, "$first_day hasta $last_day", 0, 0, 'C');
 $pdf->SetFont('Times', '', 8);
 
 $pdf->Ln(5);
-$pdf->MultiCell(0, 3, utf8_decode("Debera ser renovada en el mes\nde Enero del siguiente año."), 0, 'C');
+$pdf->MultiCell(0, 3, utf8_decode("Deberá ser renovada en el mes\nde Enero del siguiente año."), 0, 'C');
 
 $pdf->Ln(3);
 $pdf->Cell(0, 3, utf8_decode("* El lugar del puesto se encuentra sujeto a reubicación si esta Autoridad determina pertinente."));

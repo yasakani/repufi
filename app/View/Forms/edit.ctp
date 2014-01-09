@@ -79,6 +79,9 @@
 	            <div class="span3">
 	                <?php echo $this->Form->input('commerce_location', array('label' => 'Lugar de ubicación', 'class' => 'span3')); ?>
 	            </div>
+                <div class="span3">
+                	<?php echo $this->Form->input('commerce_suburb_id', array('label' => 'Colonia', 'options' => $suburbs)); ?>
+                </div>
 	            <div class="span3">
 	                <label style="cursor:default;">Dimensiones del establecimiento</label>
 	                <?php echo $this->Form->input('commerce_width', array('label' => false, 'div' => false, 'class' => 'input-small', 'placeholder' => 'Ancho')); ?>
