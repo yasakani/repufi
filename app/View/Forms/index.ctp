@@ -22,6 +22,7 @@
 	   
 	   <tr>
 	       <th><?php echo $this->Paginator->sort('id', 'Registro'); ?></th>
+	       <th><?php echo $this->Paginator->sort('folio', 'Folio'); ?></th>
             <th><?php echo $this->Paginator->sort('full_name', 'Nombre del propietario'); ?></th>
             <th><?php echo $this->Paginator->sort('commerce_location', 'Ubicación'); ?></th>
             <th><?php echo $this->Paginator->sort('commerce_square_meters', 'Superficie'); ?></th>
@@ -43,6 +44,7 @@
                     </ul>
                 </div>
             </td>
+            <td><?php echo $form['Form']['folio']; ?></td>
             <td><?php echo $this->Html->link($form['Form']['full_name'], array('controller' => 'forms', 'action' => 'view', $form['Form']['id'])); ?></td>
             <td><?php echo h($form['Form']['commerce_location']); ?></td>
             <td><?php echo round($form['Form']['commerce_square_meters'], 2); ?>m<sup>2</sup></td>

@@ -28,4 +28,20 @@ $(document).ready(function() {
 		e.preventDefault();
 	});
 	
+	$('#searchfield').typeahead({
+		items: 10,
+		minLength: 3,
+		source: function (query, process) {
+	        return $.getJSON('/files/search_results.json', { query: query }, function (data) {
+	            return process(data);
+	        });
+	    },
+	    updater: function(item) {
+	    	var itemId = item.split(':', 1);
+	    	var actionUrl = this.$element[0].form.action + '/' + itemId[0];
+	    	window.location = actionUrl;
+	    	return item;
+	    }
+	});
+	
 });

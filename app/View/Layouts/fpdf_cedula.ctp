@@ -94,29 +94,29 @@ $pdf->Cell(0, 3, 'DATOS PERSONALES:', 0, 0, 'C');
 
 $pdf->Ln(5);
 $pdf->Cell(25, 3, '', 0);
-$pdf->Cell(0, 3, "Nombre del usuario: {$form['Form']['full_name']}", 0, 0, 'L');
+$pdf->Cell(0, 3, utf8_decode("Nombre del usuario: {$form['Form']['full_name']}"), 0, 0, 'L');
 
 $pdf->Ln(4);
 $pdf->Cell(25, 3, '', 0);
-$pdf->Cell(0, 3, "Domicilio: {$form['Form']['address']}", 0, 0, 'L');
+$pdf->Cell(0, 3, utf8_decode("Domicilio: {$form['Form']['address']}"), 0, 0, 'L');
 
 $pdf->Ln(4);
 $pdf->Cell(25, 3, '', 0);
-$pdf->Cell(0, 3, "Colonia: {$form['Suburb']['name']}", 0, 0, 'L');
+$pdf->Cell(0, 3, utf8_decode("Colonia: {$form['Suburb']['name']}"), 0, 0, 'L');
 
 $pdf->Ln(4);
 $pdf->Cell(25, 3, '', 0);
 $pdf->Cell(0, 3, utf8_decode("Edad: {$form['Form']['age']} años"), 0, 0, 'L');
 
 $pdf->Ln(6);
-$pdf->Cell(104, 3, '', 0);
-$pdf->Cell(0, 3, "Folio: {$form['Form']['id']}", 0, 0, 'L');
+$pdf->Cell(103, 3, '', 0);
+$pdf->Cell(0, 3, "Folio: {$form['Form']['folio']}", 0, 0, 'L');
 
 $pdf->Ln(8);
 $pdf->Cell(0, 3, 'DATOS DEL PUESTO FIJO, SEMIFIJO O AMBULANTE.', 0, 0, 'C');
 
 $pdf->Ln(5);
-$pdf->Cell(0, 3, utf8_decode("Lugar de Ubcación: {$form['Form']['commerce_location']}"), 0, 0, 'L');
+$pdf->Cell(0, 3, utf8_decode("Lugar de Ubicación: {$form['Form']['commerce_location']}"), 0, 0, 'L');
 
 $pdf->Ln(4);
 $pdf->Cell(0, 3, utf8_decode("Giro: {$form['Form']['commerce_order']}"), 0, 0, 'L');

@@ -35,7 +35,10 @@
             
             <ul class="unstyled detail-block">
                 <li>
-                    Número de folio: <strong><?php echo $form['Form']['id']; ?></strong>
+                    ID en el sistema: <strong><?php echo $form['Form']['id']; ?></strong>
+                </li>
+                <li>
+                    Número de folio: <strong><?php echo $form['Form']['folio']; ?></strong>
                 </li>
                 <li>
                     <span class="full-name"><?php echo $form['Form']['full_name']; ?></span> <span class="label"><?php echo $form['Form']['age'] ?> años</span>

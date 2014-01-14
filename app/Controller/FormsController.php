@@ -90,6 +90,8 @@ class FormsController extends AppController {
 				
 				// QRcode
 				$this->__generateQrcode($this->Form->id);
+				// Search result json
+				$this->__generateSearchResults();
 				
 				$this->setFlash('Datos de registro capturados correctamente.', 'flash_bootstrap_success');
 				
@@ -161,6 +163,9 @@ class FormsController extends AppController {
 			
 			if ($this->Form->save($this->request->data)) {
 				
+				// Search result json
+				$this->__generateSearchResults();
+				
 				$this->setFlash('Datos de registro editados correctamente.', 'flash_bootstrap_success');
 				
 				if ( !empty($this->request->data['Form']['owner_photo']['name']) ) {
@@ -224,6 +229,9 @@ class FormsController extends AppController {
 			
 			if ( $this->Form->delete() ) {
 				
+				// Search results json
+				$this->__generateSearchResults();
+				
 				$documents_status = $this->__deleteAllDocuments($id);
 				
 				$this->Session->setFlash("Registro eliminado correctamente.", 'flash_bootstrap_success');
@@ -243,6 +251,39 @@ class FormsController extends AppController {
 			
 			$this->redirect($this->referer);
 			
+		}
+		
+	}
+	
+	public function search($form_id = null) {
+		
+		$this->set('title_for_layout', 'Resultado de busqueda');
+		
+		if ( !$form_id && $this->request->is('post') ) {
+			
+			$query = $this->request->data['Form']['query'];
+			
+			if ( empty($query) ) {
+				$this->Session->setFlash('Criterio de busqueda no especificado.', 'flash_bootstrap_error');
+				$this->redirect('/');
+			}
+			
+			$options = array(
+				'conditions' => array(
+					'or' => array(
+						'Form.full_name LIKE' => "%$query%",
+						"Form.folio LIKE" => "%$query%"
+					)
+				)
+			);
+			
+			$forms = $this->Form->find('all', $options);
+			
+			$this->set(compact('query'));
+			$this->set(compact('forms'));
+			
+		} else if ( $form_id && $this->request->is('get') ) {
+			$this->redirect(array('action' => 'view', $form_id));
 		}
 		
 	}
@@ -676,6 +717,30 @@ class FormsController extends AppController {
 		}
 		
 		return false;
+		
+	}
+	
+	private function __generateSearchResults() {
+		
+		$forms = $this->Form->find('all');
+		
+		$results = array();
+		
+		foreach ($forms as $index => $form) {
+			$results[] = "{$form['Form']['id']}:{$form['Form']['full_name']}";
+			$results[] = "{$form['Form']['id']}:{$form['Form']['folio']}";
+		}
+		
+		$results = json_encode($results, true);
+		
+		App::uses('File', 'Utility');
+		
+		$file = new File(WWW_ROOT . 'files' . DS . 'search_results.json');
+		
+		if ( !$file->exists() )
+			$file->create();
+		
+		return $file->write($results, 'w', true);
 		
 	}
 	

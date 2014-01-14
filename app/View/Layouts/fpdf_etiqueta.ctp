@@ -67,7 +67,7 @@ $pdf->MultiCell(0, 3, utf8_decode('"REPUFI" REGISTRO DE PUESTOS FIJOS, SEMIFIJOS
 $pdf->Line(3, 10, 97, 10);
 
 $pdf->Ln(2);
-$pdf->Cell(50, 3, "FOLIO NO.: {$form['Form']['id']}", 0, 0, 'L');
+$pdf->Cell(50, 3, "FOLIO NO.: {$form['Form']['folio']}", 0, 0, 'L');
 $pdf->Cell(50, 3, utf8_decode("CATEGORÍA: {$form['Category']['name']}"), 0, 0, 'L');
 
 $pdf->Ln(5);

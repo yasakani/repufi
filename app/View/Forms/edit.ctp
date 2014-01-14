@@ -100,8 +100,11 @@
 	        </div>
 	        
 	        <div class="row">
-	            <div class="span6">
+	            <div class="span3">
 	                <?php echo $this->Form->input('schedule_id', array('label' => 'Horario', 'class' => 'span3')); ?>
+	            </div>
+	            <div class="span3">
+	                <?php echo $this->Form->input('folio', array('label' => 'Número de Folio', 'class' => 'span3')); ?>
 	            </div>
 	        </div>
 			

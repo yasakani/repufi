@@ -7,9 +7,9 @@
         <?php
             echo $this->Html->meta('icon', '/favicon.ico');
             echo $this->fetch('meta');
-            echo $this->Html->css( array('bootstrap.min', 'bootstrap-responsive.min', 'chika') );
+            echo $this->Html->css( array('bootstrap.min', 'bootstrap-responsive.min', 'repufi') );
             echo $this->fetch('css');
-            echo $this->Html->script( array('jquery-1.9.1.min', 'bootstrap.min', 'chika') );
+            echo $this->Html->script( array('jquery-1.9.1.min', 'bootstrap.min', 'repufi') );
             echo $this->fetch('script');
         ?>
         <title>REPUFI &raquo; <?php echo $title_for_layout; ?></title>
@@ -37,12 +37,15 @@
                         <li class="divider-vertical"></li>
                     </ul>
                     
-                    <!--form class="navbar-search pull-left">
-                      <input type="text" class="search-query" placeholder="Buscar">
-                    </form-->
+                    <?php
+                    	echo $this->Form->create('Form', array('action' => 'search', 'class' => 'navbar-search pull-left'));
+						echo $this->Form->input('query', array('id' => 'searchfield', 'label' => false, 'div' => false, 'class' => 'search-query', 'autocomplete' => 'off', 'placeholder' => 'Buscar por nombre o folio'));
+                      	echo $this->Form->end();
+                    ?>
                     
                     <?php if ( $this->Session->read('Authake.login') && $this->Session->read('Authake.group_names.0') == 'Administrators' ) : ?>
                     <ul class="nav">
+                    	<li class="divider-vertical"></li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 Configuraci&oacute;n
