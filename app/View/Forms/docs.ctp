@@ -5,7 +5,7 @@
     </h3>
     
     <div class="alert alert-info">
-    	Solo se permiten imagenes del tipo <strong>JPG</strong> no mayores a <strong>1MB</strong>.
+    	Solo se permiten imagenes del tipo <strong>JPG, PNG, GIF, BMP</strong> no mayores a <strong>2MB</strong>.
     </div>
     
     <div class="row">

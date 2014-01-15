@@ -362,8 +362,22 @@ Configure::write('document_types', array(
 		8 => array('type' => 'fiscal', 'caption' => 'Cédula de identificación Fiscal', 'img' => null),
 		9 => array('type' => 'ambient', 'caption' => 'Dictamen favorable', 'img' => null)));
 
-Configure::write('document_valid_image_types', array('image/jpeg' => array('jpg', 'jpeg', 'jpe')));
-Configure::write('document_image_size', 1048576);
+Configure::write('document_valid_image_types', array(
+	'image/jpeg' => array(
+		'jpg', 'jpeg', 'jpe'
+	),
+	'image/png' => array(
+		'png'
+	),
+	'image/gif' => array(
+		'gif'
+	),
+	'image/bmp' => array(
+		'bmp'
+	)
+));
+
+Configure::write('document_image_size', 2097152);
 
 Configure::write('documents_folder_name', 'documents');
 Configure::write('documents_path', IMAGES . Configure::read('documents_folder_name'));

@@ -8,7 +8,10 @@ App::uses('AppController', 'Controller');
 class FormsController extends AppController {
 
 	public $paginate = array(
-		'limit' => 50
+		'limit' => 50,
+		'order' => array(
+			'Form.created' => 'desc'
+		)
 	);
 	
 /**

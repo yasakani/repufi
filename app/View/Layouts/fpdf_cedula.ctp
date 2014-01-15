@@ -184,10 +184,30 @@ $pdf->Ln(3);
 $pdf->Cell(22, 2, '', $border);
 $pdf->Cell(70, 2, utf8_decode($address_second), $border);
 
-$pdf->Ln(3);
-$pdf->Cell(0, 3, utf8_decode("Giro: {$form['Form']['commerce_order']}"), 0, 0, 'L');
+if ( strlen($form['Form']['commerce_order']) >= 40 ) {
+	$commerce_order = str_replace(array("\n", "\r"), "", $form['Form']['commerce_order']);
+	$words = split(' ', $commerce_order);
+	$letters = 0;
+	$order_first = '';
+	$order_second = '';
+	foreach ( $words as $word ) {
+		$letters = $letters + strlen( $word );
+		if ( $letters < 35 ) $order_first.= "$word ";
+		else $order_second.= "$word ";
+	}
+} else {
+	$order_first = $form['Form']['address'];
+	$order_second = '';
+}
 
-$pdf->Ln(4);
+$pdf->Ln(3);
+$pdf->Cell(6, 3, 'Giro:', $border);
+$pdf->Cell(87, 3, utf8_decode($order_first), $border);
+$pdf->Ln(3);
+$pdf->Cell(6, 2, '', $border);
+$pdf->Cell(87, 2, utf8_decode($order_second), $border);
+
+$pdf->Ln(3);
 $pdf->Cell(0, 3, utf8_decode("Medidas: {$form['Form']['commerce_width']}x{$form['Form']['commerce_long']} mts."), 0, 0, 'L');
 
 $pdf->Ln(4);
