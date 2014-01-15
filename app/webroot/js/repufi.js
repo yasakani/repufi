@@ -44,4 +44,14 @@ $(document).ready(function() {
 	    }
 	});
 	
+	$('#FormCommerceOrder').typeahead({
+		items: 5,
+		minLength: 3,
+		source: function (query, process) {
+			return $.getJSON('/files/commerce_orders.json', { query: query }, function (data) {
+				return process(data);
+			});
+		}
+	});
+	
 });

@@ -86,7 +86,7 @@
 	            
 	            <div class="row">
 	                <div class="span3">
-	                    <?php echo $this->Form->input('commerce_order', array('label' => 'Giro del puesto', 'class' => 'span3')); ?>
+	                    <?php echo $this->Form->input('commerce_order', array('label' => 'Giro del puesto', 'class' => 'span3', 'autocomplete' => 'off')); ?>
 	                </div>
 	                <div class="span3">
 	                    <?php echo $this->Form->input('category_id', array('label' => 'Categoría', 'class' => 'span3')); ?>

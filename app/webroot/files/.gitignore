@@ -1,0 +1,5 @@
+# REPUFI generated files
+commerce_orders.json
+search_results.json
+# Except this file
+!.gitignore

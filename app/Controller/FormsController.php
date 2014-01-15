@@ -92,6 +92,7 @@ class FormsController extends AppController {
 				$this->__generateQrcode($this->Form->id);
 				// Search result json
 				$this->__generateSearchResults();
+				$this->__generateCommerceOrders();
 				
 				$this->setFlash('Datos de registro capturados correctamente.', 'flash_bootstrap_success');
 				
@@ -165,6 +166,7 @@ class FormsController extends AppController {
 				
 				// Search result json
 				$this->__generateSearchResults();
+				$this->__generateCommerceOrders();
 				
 				$this->setFlash('Datos de registro editados correctamente.', 'flash_bootstrap_success');
 				
@@ -231,6 +233,7 @@ class FormsController extends AppController {
 				
 				// Search results json
 				$this->__generateSearchResults();
+				$this->__generateCommerceOrders();
 				
 				$documents_status = $this->__deleteAllDocuments($id);
 				
@@ -736,6 +739,35 @@ class FormsController extends AppController {
 		App::uses('File', 'Utility');
 		
 		$file = new File(WWW_ROOT . 'files' . DS . 'search_results.json');
+		
+		if ( !$file->exists() )
+			$file->create();
+		
+		return $file->write($results, 'w', true);
+		
+	}
+	
+	private function __generateCommerceOrders() {
+		
+		$params = array(
+			'recursive' => 0,
+			'fields' => array('Form.commerce_order'),
+			'group' => array('Form.commerce_order')
+		);
+		
+		$forms = $this->Form->find('all', $params);
+		
+		$results = array();
+		
+		foreach ($forms as $form) {
+			$results[] = $form['Form']['commerce_order'];
+		}
+		
+		$results = json_encode($results, true);
+		
+		App::uses('File', 'Utility');
+		
+		$file = new File(WWW_ROOT . 'files' . DS . 'commerce_orders.json');
 		
 		if ( !$file->exists() )
 			$file->create();

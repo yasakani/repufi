@@ -72,6 +72,8 @@ $pdf = new PDF();
 
 $pdf->SetMargins(6, 6);
 
+$pdf->SetAutoPageBreak(false, 6);
+
 $pdf->AddPage('P', array(140, 215));
 
 $pdf->SetFont('Times', '', 8);
@@ -89,18 +91,59 @@ $pdf->Image('img/cizcalli_logo.png', 23, 54, 13);
 // qrcode
 $pdf->Image("img/qrcodes/qrcode_{$form['Form']['id']}.png", 106, 33, 23);
 
-$pdf->Ln(8);
+$pdf->Ln(6);
 $pdf->Cell(0, 3, 'DATOS PERSONALES:', 0, 0, 'C');
 
 $pdf->Ln(5);
-$pdf->Cell(25, 3, '', 0);
-$pdf->Cell(0, 3, utf8_decode("Nombre del usuario: {$form['Form']['full_name']}"), 0, 0, 'L');
 
-$pdf->Ln(4);
-$pdf->Cell(25, 3, '', 0);
-$pdf->Cell(0, 3, utf8_decode("Domicilio: {$form['Form']['address']}"), 0, 0, 'L');
+$pdf->SetFont('Times', '', 7);
 
-$pdf->Ln(4);
+$border = 0;
+
+if ( strlen($form['Form']['full_name']) > 35 ) {
+	$name_first = utf8_decode("{$form['Form']['lastname_pater']} {$form['Form']['lastname_mater']}");
+	$name_second = utf8_decode($form['Form']['name']);
+} else {
+	$name_first = utf8_decode($form['Form']['full_name']);
+	$name_second = '';
+}
+
+$pdf->Cell(25, 3, '', $border);
+$pdf->Cell(21, 3, "Nombre del usuario:", $border);
+$pdf->Cell(55, 3, $name_first, $border);
+$pdf->Ln(3);
+$pdf->Cell(25, 2, '', $border);
+$pdf->Cell(21, 2, '', $border);
+$pdf->Cell(55, 2, $name_second, $border);
+
+$pdf->Ln(3);
+
+if ( strlen($form['Form']['address']) > 40 ) {
+	$address = str_replace(array("\n", "\r"), "", $form['Form']['address']);
+	$words = split(' ', $address);
+	$letters = 0;
+	$address_first = '';
+	$address_second = '';
+	foreach ( $words as $word ) {
+		$letters = $letters + strlen( $word );
+		if ( $letters < 35 ) $address_first.= "$word ";
+		else $address_second.= "$word ";
+	}
+} else {
+	$address_first = $form['Form']['address'];
+	$address_second = '';
+}
+
+$pdf->Cell(25, 3, "", $border);
+$pdf->Cell(12, 3, "Domicilio:", $border);
+$pdf->Cell(64, 3, utf8_decode($address_first), $border);
+$pdf->Ln(3);
+$pdf->Cell(25, 2, '', $border);
+$pdf->Cell(12, 2, '', $border);
+$pdf->Cell(64, 2, utf8_decode($address_second), $border);
+
+$pdf->Ln(3);
+
 $pdf->Cell(25, 3, '', 0);
 $pdf->Cell(0, 3, utf8_decode("Colonia: {$form['Suburb']['name']}"), 0, 0, 'L');
 
@@ -108,17 +151,40 @@ $pdf->Ln(4);
 $pdf->Cell(25, 3, '', 0);
 $pdf->Cell(0, 3, utf8_decode("Edad: {$form['Form']['age']} años"), 0, 0, 'L');
 
-$pdf->Ln(6);
-$pdf->Cell(103, 3, '', 0);
-$pdf->Cell(0, 3, "Folio: {$form['Form']['folio']}", 0, 0, 'L');
+$pdf->Text(110, 59, "Folio: {$form['Form']['folio']}");
 
-$pdf->Ln(8);
+$pdf->SetFont('Times', '', 8);
+
+$pdf->Ln(11);
 $pdf->Cell(0, 3, 'DATOS DEL PUESTO FIJO, SEMIFIJO O AMBULANTE.', 0, 0, 'C');
 
 $pdf->Ln(5);
-$pdf->Cell(0, 3, utf8_decode("Lugar de Ubicación: {$form['Form']['commerce_location']}"), 0, 0, 'L');
 
-$pdf->Ln(4);
+$pdf->SetFont('Times', '', 7);
+
+if ( strlen($form['Form']['commerce_location']) >= 30 ) {
+	$address = str_replace(array("\n", "\r"), "", $form['Form']['commerce_location']);
+	$words = split(' ', $address);
+	$letters = 0;
+	$address_first = '';
+	$address_second = '';
+	foreach ( $words as $word ) {
+		$letters = $letters + strlen( $word );
+		if ( $letters < 30 ) $address_first.= "$word ";
+		else $address_second.= "$word ";
+	}
+} else {
+	$address_first = $form['Form']['address'];
+	$address_second = '';
+}
+
+$pdf->Cell(22, 3, utf8_decode("Lugar de Ubicación:"), $border);
+$pdf->Cell(70, 3, utf8_decode($address_first), $border);
+$pdf->Ln(3);
+$pdf->Cell(22, 2, '', $border);
+$pdf->Cell(70, 2, utf8_decode($address_second), $border);
+
+$pdf->Ln(3);
 $pdf->Cell(0, 3, utf8_decode("Giro: {$form['Form']['commerce_order']}"), 0, 0, 'L');
 
 $pdf->Ln(4);
@@ -127,10 +193,12 @@ $pdf->Cell(0, 3, utf8_decode("Medidas: {$form['Form']['commerce_width']}x{$form[
 $pdf->Ln(4);
 $pdf->Cell(0, 3, utf8_decode("Horario: {$form['Schedule']['name']}"), 0, 0, 'L');
 
+$pdf->SetFont('Times', '', 8);
+
 $pdf->Ln(6);
+
 $pdf->SetFont('Times', '', 7);
-$pdf->Cell(85, 3, '', 0);
-$pdf->Cell(0, 3, 'Foto del puesto', 0, 0, 'C');
+$pdf->Text(105, 92, 'Foto del puesto');
 $pdf->SetFont('Times', '', 8);
 
 $pdf->Image("img" . DS . "{$form['Form']['recent_photo']['img']}", 100, 71, 25, 18);
