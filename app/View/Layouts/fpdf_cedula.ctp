@@ -196,7 +196,7 @@ if ( strlen($form['Form']['commerce_order']) >= 40 ) {
 		else $order_second.= "$word ";
 	}
 } else {
-	$order_first = $form['Form']['address'];
+	$order_first = $form['Form']['commerce_order'];
 	$order_second = '';
 }
 
@@ -208,6 +208,9 @@ $pdf->Cell(6, 2, '', $border);
 $pdf->Cell(87, 2, utf8_decode($order_second), $border);
 
 $pdf->Ln(3);
+$pdf->Cell(0, 3, utf8_decode("Categoría: {$form['Category']['name']}"), $border);
+
+$pdf->Ln(4);
 $pdf->Cell(0, 3, utf8_decode("Medidas: {$form['Form']['commerce_width']}x{$form['Form']['commerce_long']} mts."), 0, 0, 'L');
 
 $pdf->Ln(4);
@@ -215,7 +218,7 @@ $pdf->Cell(0, 3, utf8_decode("Horario: {$form['Schedule']['name']}"), 0, 0, 'L')
 
 $pdf->SetFont('Times', '', 8);
 
-$pdf->Ln(6);
+$pdf->Ln(2);
 
 $pdf->SetFont('Times', '', 7);
 $pdf->Text(105, 92, 'Foto del puesto');
@@ -236,8 +239,10 @@ $pdf->SetFont('Times', '', 8);
 $pdf->Ln(5);
 $pdf->Cell(0, 3, 'VIGENCIA', 0, 0, 'C');
 
-$first_day = strftime("%d de Enero del %Y", mktime(0, 0, 0, 1, 1, date("Y")));
-$last_day = strftime("%d de Diciembre del %Y", mktime(0, 0, 0, 12, 31, date("Y")));
+if ( empty($year) or !isset($year) ) $year = date('Y');
+
+$first_day = strftime("%d de Enero del %Y", mktime(0, 0, 0, 1, 1, $year));
+$last_day = strftime("%d de Diciembre del %Y", mktime(0, 0, 0, 12, 31, $year));
 
 $pdf->Ln(4);
 $pdf->SetFont('Times', 'U', 9);
@@ -246,7 +251,7 @@ $pdf->Cell(0, 4, "$first_day hasta $last_day", 0, 0, 'C');
 $pdf->SetFont('Times', '', 8);
 
 $pdf->Ln(5);
-$pdf->MultiCell(0, 3, utf8_decode("Deberá ser renovada en el mes\nde Enero del siguiente año."), 0, 'C');
+$pdf->MultiCell(0, 3, utf8_decode("Deberá Ser Renovada en los Primeros 90 Días\nNaturales del Siguiente Año."), 0, 'C');
 
 $pdf->Ln(3);
 $pdf->Cell(0, 3, utf8_decode("* El lugar del puesto se encuentra sujeto a reubicación si esta Autoridad determina pertinente."));
@@ -262,7 +267,7 @@ $pdf->Cell(0, 3, 'Expide', 0, 0, 'C');
 
 $pdf->Ln(8);
 $pdf->Cell(0, 3 , 'LUIS ALBERTO BARAJAS NAVA', 0, 0, 'C');
-$pdf->Line(45, 167, 95, 167);
+$pdf->Line(45, 169, 95, 169);
 $pdf->Ln();
 $pdf->Cell(0, 3, utf8_decode('DIRECTOR DE GOBIERNO Y ASUNTOS JURÍDICOS'), 0, 0, 'C');
 
@@ -272,11 +277,11 @@ $pdf->Cell(64, 3, utf8_decode('Vo.Bo.'), 0, 0, 'C');
 
 $pdf->Ln(8);
 $pdf->Cell(64, 3, utf8_decode('Meliton Montiel Domínguez'), 0, 0, 'C');
-$pdf->Line(15, 187, 60, 187);
+$pdf->Line(15, 189, 60, 189);
 $pdf->Cell(64, 3, utf8_decode('José Benjamin López Robles'), 0, 0, 'C');
 $pdf->Ln();
 $pdf->Cell(64, 3, utf8_decode('Jefe Depto. de Autorizaciones y Vía Pública'), 0, 0, 'C');
-$pdf->Line(78, 187, 127, 187);
+$pdf->Line(78, 189, 127, 189);
 $pdf->Cell(64, 3, utf8_decode('Subdirector de Gobierno'), 0, 0, 'C');
 
 $pdf->SetFont('Times', 'B', 20);

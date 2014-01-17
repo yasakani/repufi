@@ -10,7 +10,25 @@
             <div class="actions">
                 <ul class="inline">
                     <li><?php echo $this->Html->link('Lista', array('action' => 'index'), array('class' => 'btn btn-small')); ?></li>
-                    <li><?php echo $this->Html->link('Cédula', array('action' => 'cedula', 'ext' => 'pdf', $form['Form']['id'], "cedula_registro_{$form['Form']['id']}"), array('class' => 'btn btn-small btn-primary')); ?></li>
+                    <li>
+                    	<div class="btn-group">
+                    		 <a class="btn btn-primary btn-small dropdown-toggle" data-toggle="dropdown" href="#">
+                    		 	Cédula
+                    		 	<span class="caret"></span>
+                    		 </a>
+                    		<ul class="dropdown-menu">
+                    			<li>
+                    				<?php echo $this->Html->link('2013', array('action' => 'cedula', 'ext' => 'pdf', $form['Form']['id'], 2013, "cedula_registro_2013_{$form['Form']['id']}")); ?>
+                    			</li>
+                    			<li>
+                    				<?php echo $this->Html->link('2014', array('action' => 'cedula', 'ext' => 'pdf', $form['Form']['id'], 2014, "cedula_registro_2014_{$form['Form']['id']}")); ?>
+                    			</li>
+                    			<li>
+                    				<?php echo $this->Html->link('2015', array('action' => 'cedula', 'ext' => 'pdf', $form['Form']['id'], 2015, "cedula_registro_2015_{$form['Form']['id']}")); ?>
+                    			</li>
+                    		</ul>
+                    	</div>
+                    </li>
                     <li><?php echo $this->Html->link('Etiqueta', array('action' => 'etiqueta', 'ext' => 'pdf', $form['Form']['id'], "etiqueta_registro_{$form['Form']['id']}"), array('class' => 'btn btn-small btn-primary')); ?></li>
                     <li><?php echo $this->Html->link('Editar', array('action' => 'edit', $form['Form']['id']), array('class' => 'btn btn-small')); ?></li>
                     <li><?php echo $this->Form->postLink('Eliminar', array('action' => 'delete', $form['Form']['id']), array('class' => 'btn btn-small btn-danger'), '¿Eliminar registro?', $form['Form']['id']); ?></li>

@@ -386,6 +386,7 @@ class FormsController extends AppController {
 		$form['Form']['recent_photo'] = $this->__getDocument('recent_photo', $form_id);
 		
 		$this->set(compact('form'));
+		$this->set('year', $this->passedArgs[1]);
 		
 	}
 	
@@ -599,7 +600,7 @@ class FormsController extends AppController {
 		
 		if ( empty($form) || !is_array($form) ) return false;
 		
-		if ( $form['Form']['schedule_id'] == '0' )
+		if ( $form['Form']['schedule_id'] == '0' || !$form['Form']['schedule_id'] )
 			$schedule = json_decode( $form['Form']['commerce_schedule'],  true );
 		else 
 			$schedule = json_decode( $form['Schedule']['data'], true );
