@@ -68,3 +68,8 @@
 	opacity: 0;
 	filter: alpha(opacity=0);
 }
+
+.img-qrcode {
+	width: 132px;
+	height: 132px;
+}

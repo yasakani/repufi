@@ -61,7 +61,8 @@ class FormsController extends AppController {
 		}
 		
 		// Generate QRcode for existing records
-		$form['Form']['qrcode'] = $this->__generateQrcode($id);
+		$qr_code = $this->__generateQrcode($id);
+		$form['Form']['qrcode'] = ( $qr_code ) ? $qr_code: 'no_qr.png';
 		
 		$this->set('form', $form);
 		
@@ -411,6 +412,7 @@ class FormsController extends AppController {
 		$form['Form']['commerce_suburb'] = ( !empty($commerce_suburb_data) ) ? $commerce_suburb_data['Suburb']['name'] : 'No especificada';
 		
 		$this->set(compact('form'));
+		$this->set('year', $this->passedArgs[1]);
 		
 	}
 	
@@ -480,19 +482,24 @@ class FormsController extends AppController {
 		
 		$png_absolute_file_path = $qrcodes_path . $filename;
 		
-		if ( file_exists($png_absolute_file_path) )
-			return 'qrcodes' . DS . $filename;
-		else {
+		if ( is_writable($qrcodes_path) ) {
 			
-			include( APP . 'Vendor' . DS . 'phpqrcode' . DS . 'qrlib.php' );
+			if ( file_exists($png_absolute_file_path) )
+				return 'qrcodes' . DS . $filename;
+			else {
+				
+				include( APP . 'Vendor' . DS . 'phpqrcode' . DS . 'qrlib.php' );
+				
+				$code_contents = FULL_BASE_URL . DS . 'repufi' . DS . $form_id;
+				
+				QRcode::png($code_contents, $png_absolute_file_path, QR_ECLEVEL_L, 4, 2);
+				
+				return 'qrcodes' . DS . $filename;
+				
+			}
 			
-			$code_contents = FULL_BASE_URL . DS . 'repufi' . DS . $form_id;
-			
-			QRcode::png($code_contents, $png_absolute_file_path, QR_ECLEVEL_L, 4, 2);
-			
-			return 'qrcodes' . DS . $filename;
-			
-		}
+		} else 
+			$this->Session->setFlash('El directorio para codigos QR no esta disponible, contacta con el administrador del sistema.', 'flash_bootstrap_error');
 		
 		return false;
 		

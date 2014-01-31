@@ -60,6 +60,8 @@ $pdf->SetAutoPageBreak(false, 3);
 
 $pdf->AddPage('L', array(100, 62));
 
+$border = 0;
+
 $pdf->SetFont('Arial', 'B', 8);
 
 $pdf->MultiCell(0, 3, utf8_decode('"REPUFI" REGISTRO DE PUESTOS FIJOS, SEMIFIJOS Y AMBULANTES'), 0, 'C');
@@ -71,16 +73,48 @@ $pdf->Cell(50, 3, "FOLIO NO.: {$form['Form']['folio']}", 0, 0, 'L');
 $pdf->Cell(50, 3, utf8_decode("CATEGORÍA: {$form['Category']['name']}"), 0, 0, 'L');
 
 $pdf->Ln(5);
-$pdf->SetFontSize(13);
-$pdf->Cell(0, 5, utf8_decode("{$form['Form']['full_name']}"), 0, 0, 'L');
+
+if ( strlen($form['Form']['full_name']) > 30 )
+	$pdf->SetFontSize(11);
+else
+	$pdf->SetFontSize(13);
+$pdf->Cell(0, 5, utf8_decode("{$form['Form']['full_name']}"), $border, 0, 'L');
 $pdf->SetFontSize(8);
 
 $pdf->Line(3, 23, 97, 23);
 
-$pdf->Ln(9);
-$pdf->Cell(70, 3, utf8_decode("DIRECCIÓN: {$form['Form']['commerce_location']}"), 0, 0, 'L');
+if ( strlen($form['Form']['commerce_location']) >= 34 ) {
+	$commerce_location = str_replace(array("\n", "\r"), "", $form['Form']['commerce_location']);
+	$words = split(' ', $commerce_location);
+	$letters = 0;
+	$first_line = '';
+	$second_line = '';
+	foreach ( $words as $word ) {
+		$letters = $letters + strlen( $word );
+		if ( $letters < 34 ) $first_line.= "$word ";
+		else $second_line.= "$word ";
+	}
+} else {
+	$first_line = $form['Form']['commerce_location'];
+	$second_line = '';
+}
 
-$pdf->Ln(6);
+$pdf->Ln(9);
+$pdf->Cell(18, 3, utf8_decode("DIRECCIÓN:"), $border, 0, 'L');
+if ( strlen($form['Form']['commerce_location']) >= 34 ) {
+	$pdf->SetFontSize(6);
+	$height = 2;
+} else {
+	$height = 3;
+}
+$pdf->Cell(58, $height, utf8_decode($first_line), $border);
+$pdf->Ln();
+$pdf->Cell(18, $height, '', $border);
+$pdf->Cell(58, $height, utf8_decode($second_line), $border);
+
+$pdf->SetFontSize(8);
+
+$pdf->Ln(3);
 $pdf->Cell(70, 3, utf8_decode("COLONIA: {$form['Form']['commerce_suburb']}"), 0, 0, 'L');
 
 $pdf->Ln(6);
@@ -88,8 +122,8 @@ $pdf->Cell(70, 3, utf8_decode("GIRO: {$form['Form']['commerce_order']}"), 0, 0, 
 
 $pdf->Line(3, 42, 80, 42);
 
-$first_day = strftime("%e DE %B %Y", mktime(0, 0, 0, 1, 1, 2013));
-$last_day = strftime("%e %B %Y", mktime(0, 0, 0, 12, 31, 2013));
+$first_day = strftime("%e DE %B %Y", mktime(0, 0, 0, 1, 1, $year));
+$last_day = strftime("%e %B %Y", mktime(0, 0, 0, 12, 31, $year));
 
 $pdf->Ln(12);
 $pdf->Cell(1, 3, '');

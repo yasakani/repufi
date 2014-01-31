@@ -79,7 +79,7 @@ $pdf->AddPage('P', array(140, 215));
 $pdf->SetFont('Times', '', 8);
 
 $pdf->Ln(6);
-$pdf->Cell(0, 3, utf8_decode('CÉDULA PARA PUESTOS FIJOS, SEMIFIJOS O COMERCIATES AMBULANTES.'), 0, 0, 'C');
+$pdf->Cell(0, 3, utf8_decode('CÉDULA PARA PUESTOS FIJOS, SEMIFIJOS O COMERCIANTES AMBULANTES.'), 0, 0, 'C');
 
 $pdf->Image("img" . DS . "{$form['Form']['owner_photo']}", 7, 33, 24, 30);
 
