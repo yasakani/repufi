@@ -26,7 +26,8 @@
  * its action called 'display', and we pass a param to select the view file
  * to use (in this case, /app/View/Pages/home.ctp)...
  */
-	Router::connect('/', array('controller' => 'forms', 'action' => 'index'));
+ 	Router::connect('/', array('controller' => 'users', 'action' => 'index'));
+	//Router::connect('/', array('controller' => 'forms', 'action' => 'index'));
 /**
  * ...and connect the rest of 'Pages' controller's urls.
  */
@@ -34,13 +35,19 @@
 
 	// Simple logout in spanish
 	Router::connect('/usuarios', array('plugin' => 'authake', 'controller' => 'users', 'action' => 'index'));
+	//Router::connect('/entrar', array('plugin' => 'authake', 'controller' => 'user', 'action' => 'login'));
 	Router::connect('/salir', array('plugin' => 'authake', 'controller' => 'user', 'action' => 'logout'));
 	
 	Router::connect('/mapa', array('controller' => 'forms', 'action' => 'map'));
 	
 	// Alias routes for forms
 	Router::connect('/captura', array('controller' => 'forms', 'action' => 'add'));
-	Router::connect('/puestos/:action/*', array('controller' => 'forms'));
+	Router::connect('/registros', array('controller' => 'forms', 'action' => 'index'));
+	Router::connect('/registros/buscar/*', array('controller' => 'forms', 'action' => 'search'));
+	Router::connect('/registros/buscar.json', array('controller' => 'forms', 'action' => 'search', 'ext' => 'json'));
+	Router::connect('/registros/ver/*', array('controller' => 'forms', 'action' => 'view'));
+	Router::connect('/registros/editar/*', array('controller' => 'forms', 'action' => 'edit'));
+	Router::connect('/registros/:action/*', array('controller' => 'forms'));
 	
 	// Alias for documents
 	Router::connect('/documentos/*', array('controller' => 'forms', 'action' => 'docs'));

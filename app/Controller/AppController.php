@@ -75,5 +75,5 @@ class AppController extends Controller {
 		return $hours_a_day;
 		
 	}
-    
+	    
 }

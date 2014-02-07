@@ -94,8 +94,6 @@ class FormsController extends AppController {
 				
 				// QRcode
 				$this->__generateQrcode($this->Form->id);
-				// Search result json
-				$this->__generateSearchResults();
 				$this->__generateCommerceOrders();
 				
 				$this->setFlash('Datos de registro capturados correctamente.', 'flash_bootstrap_success');
@@ -169,7 +167,6 @@ class FormsController extends AppController {
 			if ($this->Form->save($this->request->data)) {
 				
 				// Search result json
-				$this->__generateSearchResults();
 				$this->__generateCommerceOrders();
 				
 				$this->setFlash('Datos de registro editados correctamente.', 'flash_bootstrap_success');
@@ -236,7 +233,6 @@ class FormsController extends AppController {
 			if ( $this->Form->delete() ) {
 				
 				// Search results json
-				$this->__generateSearchResults();
 				$this->__generateCommerceOrders();
 				
 				$documents_status = $this->__deleteAllDocuments($id);
@@ -262,35 +258,55 @@ class FormsController extends AppController {
 		
 	}
 	
-	public function search($form_id = null) {
+	public function search($query = null) {
 		
-		$this->set('title_for_layout', 'Resultado de busqueda');
+		if ( !$query && !isset($this->request->query['q']) )
+			$query = '';
+		else if ( isset($this->request->query['q']) )
+			$query = $this->request->query['q'];
 		
-		if ( !$form_id && $this->request->is('post') ) {
+		$json = ( isset($this->request->params['ext']) && $this->request->params['ext'] == 'json' ) ? true : false;
+		
+		$options = array(
+			'conditions' => array(
+				'or' => array(
+					'Form.full_name LIKE' => "%$query%",
+					"Form.folio LIKE" => "%$query%"
+				)
+			)
+		);
+		
+		$forms = $this->Form->find('all', $options);
+		
+		if ( $json ) {
 			
-			$query = $this->request->data['Form']['query'];
+			$results = array();
 			
-			if ( empty($query) ) {
-				$this->Session->setFlash('Criterio de busqueda no especificado.', 'flash_bootstrap_error');
-				$this->redirect('/');
+			foreach ($forms as $index => $form) {
+				$results[] = array(
+					'id' => $form['Form']['id'],
+					'folio' => $form['Form']['folio'],
+					'name' => $form['Form']['full_name']
+				);
 			}
 			
-			$options = array(
-				'conditions' => array(
-					'or' => array(
-						'Form.full_name LIKE' => "%$query%",
-						"Form.folio LIKE" => "%$query%"
-					)
-				)
-			);
+			$results = json_encode($results, true);
 			
-			$forms = $this->Form->find('all', $options);
+			header('Content-type: application/json');
+			echo $results; exit;
+			
+		} else {
+			
+			$this->set('title_for_layout', 'Resultado de busqueda');
+			
+			$result_number = count($forms);
+			
+			if ( empty($query) ) $query = 'Sin criterio de busqueda';
 			
 			$this->set(compact('query'));
 			$this->set(compact('forms'));
+			$this->set(compact('result_number'));
 			
-		} else if ( $form_id && $this->request->is('get') ) {
-			$this->redirect(array('action' => 'view', $form_id));
 		}
 		
 	}
@@ -731,30 +747,6 @@ class FormsController extends AppController {
 		}
 		
 		return false;
-		
-	}
-	
-	private function __generateSearchResults() {
-		
-		$forms = $this->Form->find('all');
-		
-		$results = array();
-		
-		foreach ($forms as $index => $form) {
-			$results[] = "{$form['Form']['id']}:{$form['Form']['full_name']}";
-			$results[] = "{$form['Form']['id']}:{$form['Form']['folio']}";
-		}
-		
-		$results = json_encode($results, true);
-		
-		App::uses('File', 'Utility');
-		
-		$file = new File(WWW_ROOT . 'files' . DS . 'search_results.json');
-		
-		if ( !$file->exists() )
-			$file->create();
-		
-		return $file->write($results, 'w', true);
 		
 	}
 	

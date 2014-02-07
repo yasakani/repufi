@@ -38,8 +38,9 @@
                     </ul>
                     
                     <?php
-                    	echo $this->Form->create('Form', array('action' => 'search', 'class' => 'navbar-search pull-left'));
-						echo $this->Form->input('query', array('id' => 'searchfield', 'label' => false, 'div' => false, 'class' => 'search-query', 'autocomplete' => 'off', 'placeholder' => 'Buscar por nombre o folio'));
+                    	echo $this->Form->create('Form', array('action' => 'search', 'type' => 'get', 'class' => 'navbar-search pull-left'));
+						echo $this->Form->input('q', array('id' => 'searchfield', 'label' => false, 'div' => false, 'class' => 'search-query', 'autocomplete' => 'off', 'placeholder' => 'Buscar por nombre o folio'));
+                      	echo $this->Form->button('<i class="icon-search"></i>', array('type' => 'submit', 'title' => 'Buscar', 'class' => 'btn btn-small button-mainsearch'));
                       	echo $this->Form->end();
                     ?>
                     

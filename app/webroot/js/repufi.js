@@ -29,18 +29,27 @@ $(document).ready(function() {
 	});
 	
 	$('#searchfield').typeahead({
-		items: 10,
-		minLength: 3,
+		items: 15,
+		minLength: 2,
 		source: function (query, process) {
-	        return $.getJSON('/files/search_results.json', { query: query }, function (data) {
-	            return process(data);
+	        return $.getJSON('/registros/buscar.json', { q: query }, function (response) {
+				var data = [];
+                for (var i in response) {
+					data.push(response[i].id + ':' + response[i].folio + ':' + response[i].name);
+                }
+				return process(data);
 	        });
 	    },
+	    highlighter: function (item) {
+			var parts = item.split(':');
+			var html = parts[2] + ' (Folio: ' + parts[1] + ')';
+			return html;
+        },
 	    updater: function(item) {
-	    	var itemId = item.split(':', 1);
-	    	var actionUrl = this.$element[0].form.action + '/' + itemId[0];
+	    	var parts = item.split(':');
+	    	var actionUrl = '/registros/ver/' + parts[0];
 	    	window.location = actionUrl;
-	    	return item;
+	    	return parts[2];
 	    }
 	});
 	

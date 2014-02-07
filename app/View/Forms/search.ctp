@@ -3,6 +3,7 @@
 	<h2>Resultado de busqueda</h2>
 	
 	<h4>Criterio de busqueda: <span style="color:#A9302A;"><?php echo $query; ?></span></h4>
+	<h4>Número de resultados: <span style="color:#A9302A;"><?php echo $result_number; ?></span></h4>
 	
 	<table class="table table-striped table-bordered table-hover">
 	   

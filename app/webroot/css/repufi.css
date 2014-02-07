@@ -73,3 +73,8 @@
 	width: 132px;
 	height: 132px;
 }
+
+#FormSearchForm .button-mainsearch {
+	margin-top: 0px;
+	margin-left: 5px;
+}
