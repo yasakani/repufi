@@ -117,8 +117,36 @@ $pdf->SetFontSize(8);
 $pdf->Ln(3);
 $pdf->Cell(70, 3, utf8_decode("COLONIA: {$form['Form']['commerce_suburb']}"), 0, 0, 'L');
 
+if ( strlen($form['Form']['commerce_order']) >= 50 ) {
+	$commerce_order = str_replace(array("\n", "\r"), "", $form['Form']['commerce_order']);
+	$words = split(' ', $commerce_order);
+	$letters = 0;
+	$first_line = '';
+	$second_line = '';
+	foreach ( $words as $word ) {
+		$letters = $letters + strlen( $word );
+		if ( $letters < 50 ) $first_line.= "$word ";
+		else $second_line.= "$word ";
+	}
+} else {
+	$first_line = $form['Form']['commerce_order'];
+	$second_line = '';
+}
+
 $pdf->Ln(6);
-$pdf->Cell(70, 3, utf8_decode("GIRO: {$form['Form']['commerce_order']}"), 0, 0, 'L');
+$pdf->Cell(10, 3, 'GIRO:', $border);
+if ( strlen($form['Form']['commerce_order']) >= 50 ) {
+	$pdf->SetFontSize(6);
+	$height = 2;
+} else {
+	$height = 3;
+}
+$pdf->Cell(66, $height, utf8_decode($first_line), $border);
+$pdf->Ln();
+$pdf->Cell(10, $height, '', $border);
+$pdf->Cell(66, $height, utf8_decode($second_line), $border);
+
+$pdf->SetFontSize(8);
 
 $pdf->Line(3, 42, 80, 42);
 

@@ -159,7 +159,7 @@ class AuthakeComponent extends Component {
             if ((time() - $ts) > $tm) {
                 $this->setPreviousUrl($path);
                 $this->logout();
-                $this->Session->setFlash(__('Your session expired'), 'warning');
+                $this->Session->setFlash('La sesión ha expirado', 'flash_bootstrap_alert');
                 $controller->redirect($loginAction);
             }
             $this->setTimestamp();

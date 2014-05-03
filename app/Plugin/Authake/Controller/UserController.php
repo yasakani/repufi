@@ -530,7 +530,7 @@ class UserController extends AuthakeAppController {
 		if ($this->Authake->isLogged())
 		{
 			$this->Authake->logout();
-			$this->Session->setFlash(__('You are logged out!'), 'info', array('plugin' => 'Authake'));
+			$this->Session->setFlash('Se ha cerrado la sesión.', 'flash_bootstrap_info', array('plugin' => 'Authake'));
 		}
 
 		$this->redirect('/');
