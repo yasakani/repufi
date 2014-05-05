@@ -38,7 +38,8 @@ class AppController extends Controller {
     var $counter = 0;
     
     public function beforeFilter() {
-    	setlocale(LC_TIME, 'es_MX.utf8');
+    	date_default_timezone_set('America/Mexico_City');
+    	setlocale(LC_TIME, 'es_MX.utf8', 'es_MX', 'mx', 'es_mx');
         $this->layout = 'repufi';
         $this->auth();
     }
