@@ -623,6 +623,14 @@ class FormsController extends AppController {
 		
 		if ( empty($form) || !is_array($form) ) return false;
 		
+		// Corrección de asignación de horario
+		if ( $form['Form']['schedule_id'] == null ) {
+			$schedule = $this->Form->Schedule->find('first', array('recursive' => 0));
+			$form['Form']['schedule_id'] = $schedule['Schedule']['id'];
+			$form['Schedule'] = $schedule['Schedule'];
+			unset($schedule);
+		}
+		
 		if ( $form['Form']['schedule_id'] == '0' || !$form['Form']['schedule_id'] )
 			$schedule = json_decode( $form['Form']['commerce_schedule'],  true );
 		else 

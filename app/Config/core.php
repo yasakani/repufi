@@ -354,13 +354,16 @@ Configure::write('document_types', array(
 		0 => array('type' => 'receipt_2011', 'caption' => 'Recibo de pago 2011', 'img' => null),
 		1 => array('type' => 'receipt_2012', 'caption' => 'Recibo de pago 2012', 'img' => null),
 		2 => array('type' => 'recent_photo', 'caption' => 'Fotografia reciente del comercio', 'img' => null),
-		3 => array('type' => 'rights_2013', 'caption' => 'Pago de derechos 2013', 'img' => null), 
+		3 => array('type' => 'rights_2013', 'caption' => 'Recibo de pago 2013', 'img' => null), 
 		4 => array('type' => 'photo_id', 'caption' => 'Fotografía tamaño credencial', 'img' => null),
 		5 => array('type' => 'address', 'caption' => 'Constancia domiciliaria', 'img' => null),
 		6 => array('type' => 'sanity', 'caption' => 'Tarjeta sanitaria', 'img' => null),
 		7 => array('type' => 'ife', 'caption' => 'IFE', 'img' => null),
 		8 => array('type' => 'fiscal', 'caption' => 'Cédula de identificación Fiscal', 'img' => null),
-		9 => array('type' => 'ambient', 'caption' => 'Dictamen favorable', 'img' => null)));
+		9 => array('type' => 'ambient', 'caption' => 'Dictamen favorable', 'img' => null),
+		10 => array('type' => 'receipt_2014', 'caption' => 'Recibo de pago 2014', 'img' => null),
+		11 => array('type' => 'receipt_2015', 'caption' => 'Recibo de pago 2015', 'img' => null)
+));
 
 Configure::write('document_valid_image_types', array(
 	'image/jpeg' => array(
@@ -377,7 +380,7 @@ Configure::write('document_valid_image_types', array(
 	)
 ));
 
-Configure::write('document_image_size', 2097152);
+Configure::write('document_image_size', 4194304);
 
 Configure::write('documents_folder_name', 'documents');
 Configure::write('documents_path', IMAGES . Configure::read('documents_folder_name'));
